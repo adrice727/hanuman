@@ -1,2 +1,2 @@
 # hanuman
-A small JavaScript helper library
+A small, function first, data last, JavaScript helper library
