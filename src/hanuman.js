@@ -133,13 +133,52 @@ var hanuman = (() => {
 		  return nested;
 		};
 
+
+		/**
+		* Returns a new object by copying properties from the supplied object.  Undefined
+		* properties are not copied to the new object.
+		* @param {array} props - An array of properties
+		* @param {object} obj - The object from which the properties are copied
+		*/
+		let pick = (props, obj) => {
+
+			let copyProperty = (acc, key) => {
+				if ( obj.hasOwnProperty(key) ) {
+					acc[key] = obj[key];
+				}
+				return acc;
+			};
+
+			return reduce(copyProperty, {}, props)
+
+		};
+
+		/**
+		* Returns a new object by copying properties from the supplied object.  Undefined
+		* properties are copied to the new object.
+		* @param {array} props - An array of properties
+		* @param {object} obj - The object from which the properties are copied
+		*/
+		let pickAll = (props, obj) => {
+
+			let copyProperty = (acc, key) => {
+				acc[key] = obj[key];
+				return acc;
+			};
+
+			return reduce(copyProperty, {}, props)
+
+		};
+
 		return {
 			curry,
 			forEach : curry(forEach),
 			map     : curry(map),
 			filter  : curry(filter),
 			reduce  : curry(reduce),
-			path    : curry(path)
+			path    : curry(path),
+			pick    : curry(pick),
+			pickAll : curry(pickAll)
 		};
 
 	})();

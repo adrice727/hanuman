@@ -9,5 +9,7 @@
 * `filter`
 * `reduce`
 * `path`
+* `pick`
+* `pickAll`
 
 ###### **~ All functions are automatically curried, and accordingly, accept the data as the final argument ~**
