@@ -135,11 +135,11 @@ var hanuman = (() => {
 
 		return {
 			curry,
-			forEach		: curry(forEach),
-			map 			: curry(map),
-			filter		: curry(filter),
-			reduce		: curry(reduce),
-			path 			: curry(path)
+			forEach : curry(forEach),
+			map     : curry(map),
+			filter  : curry(filter),
+			reduce  : curry(reduce),
+			path    : curry(path)
 		};
 
 	})();
