@@ -5,7 +5,7 @@
 		let _error = (message) => new Error(`ø( ^_^ )ø Hanuman: ${message}`);
 
 		/**
-		* Returns a curried version of the function, which can also be curried
+		* Returns a curried version of the supplied function
 		* @param {function} fn - The function to be curried
 		* @param {...*} [args] - A single argument or series of arguments
 		*/
@@ -78,14 +78,28 @@
 
 		};
 
-		let filter = (fn, collection) => {
+		/**
+		* Applies a predicate function to a list of values and returns a new list of values which pass the test
+		* @param {function} fn - The predicate function which acts as the filter
+		* @param {array} list - The list to be iterated over
+		*/
+		let filter = (fn, list) => {
+
+			if ( !Array.isArray(list) ) { throw _error('Input must be an array'); }
+
+			let reducer = (acc, item) => {
+				!!fn(item) && acc.push(item);
+				return acc;
+			};
+
+			return reduce(reducer, [], list);
 
 		};
 
 		/**
-		* Applies a reducer function to a list to
+		* Applies an iterator function to an accumulator and each value in a a list, returning a single value
 		* @param {function} fn - The iterator function which receives the memo and current item from the list
-		* @param {*} memo - The initial value passed to the iterator function
+		* @param {*} acc - The initial value passed to the iterator function
 		* @param {array} list - The list to be iterated over
 		*/
 		let reduce = (fn, memo, list) => {
@@ -101,7 +115,6 @@
 			return result;
 
 		}
-
 
 		/**
 		* Returns the nested value from an object or undefined if it doesn't exist
@@ -123,11 +136,11 @@
 
 		return {
 			curry,
-			path : curry(path),
 			forEach	: curry(forEach),
 			map : curry(map),
-			reduce: curry(reduce)
-
+			filter: curry(filter),
+			reduce: curry(reduce),
+			path : curry(path)
 		}
 
 	})();
