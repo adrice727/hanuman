@@ -25,8 +25,7 @@
 		    }
 
 		  }
-
-		}
+		};
 
 	  /** forEach Array */
 		let _forEachArray = (fn, array) => {
@@ -132,15 +131,15 @@
 		  }
 
 		  return nested;
-		}
+		};
 
 		return {
 			curry,
-			forEach	: curry(forEach),
-			map : curry(map),
-			filter: curry(filter),
-			reduce: curry(reduce),
-			path : curry(path)
-		}
+			forEach		: curry(forEach),
+			map 			: curry(map),
+			filter		: curry(filter),
+			reduce		: curry(reduce),
+			path 			: curry(path)
+		};
 
 	})();
