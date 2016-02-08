@@ -27,7 +27,7 @@ var hanuman = (() => {
 		  }
 		};
 
-	  /** forEach Array */
+		/** forEach Array */
 		let _forEachArray = (fn, array) => {
 
 			for ( let i = 0; i < array.length; i++ ) {
