@@ -10,10 +10,10 @@ var hanuman = function () {
 	};
 
 	/**
- * Returns a curried version of the supplied function
- * @param {function} fn - The function to be curried
- * @param {...*} [args] - A single argument or series of arguments
- */
+     * Returns a curried version of the supplied function
+     * @param {function} fn - The function to be curried
+     * @param {...*} [args] - A single argument or series of arguments
+     */
 	var curry = function curry(fn, args) {
 
 		args = args || [];
@@ -49,11 +49,11 @@ var hanuman = function () {
 	};
 
 	/**
- * Applies a function to each item in the collection.  If the collection is an object
- * the iterator function will receive the key, value, and object.
- * @param {function} fn
- * @param {array | object} [args] - A single argument or series of arguments
- */
+     * Applies a function to each item in the collection.  If the collection is an object
+     * the iterator function will receive the key, value, and object.
+     * @param {function} fn
+     * @param {array | object} [args] - A single argument or series of arguments
+     */
 	var forEach = function forEach(fn, collection) {
 
 		if (!Array.isArray(collection) || (typeof collection === 'undefined' ? 'undefined' : _typeof(collection)) !== 'object') {
@@ -64,10 +64,10 @@ var hanuman = function () {
 	};
 
 	/**
- * Creates a new list by applying a function to each item in the list
- * @param {function} fn - The function to be called on each element
- * @param {array} list - The list to be iterated over
- */
+     * Creates a new list by applying a function to each item in the list
+     * @param {function} fn - The function to be called on each element
+     * @param {array} list - The list to be iterated over
+     */
 	var map = function map(fn, list) {
 
 		if (!Array.isArray(list)) {
@@ -84,10 +84,10 @@ var hanuman = function () {
 	};
 
 	/**
- * Applies a predicate function to a list of values and returns a new list of values which pass the test
- * @param {function} fn - The predicate function which acts as the filter
- * @param {array} list - The list to be iterated over
- */
+     * Applies a predicate function to a list of values and returns a new list of values which pass the test
+     * @param {function} fn - The predicate function which acts as the filter
+     * @param {array} list - The list to be iterated over
+     */
 	var filter = function filter(fn, list) {
 
 		if (!Array.isArray(list)) {
@@ -103,11 +103,11 @@ var hanuman = function () {
 	};
 
 	/**
- * Applies an iterator function to an accumulator and each value in a a list, returning a single value
- * @param {function} fn - The iterator function which receives the memo and current item from the list
- * @param {*} acc - The initial value passed to the iterator function
- * @param {array} list - The list to be iterated over
- */
+     * Applies an iterator function to an accumulator and each value in a a list, returning a single value
+     * @param {function} fn - The iterator function which receives the memo and current item from the list
+     * @param {*} acc - The initial value passed to the iterator function
+     * @param {array} list - The list to be iterated over
+     */
 	var reduce = function reduce(fn, memo, list) {
 
 		if (!Array.isArray(list)) {
@@ -116,18 +116,18 @@ var hanuman = function () {
 
 		var result = memo;
 
-		for (var i = 0; i < list.length; i++) {
-			result = fn(result, list[i]);
-		}
+		_forEachArray(function (value) {
+			result = fn(result, value);
+		}, list);
 
 		return result;
 	};
 
 	/**
- * Returns the nested value from an object or undefined if it doesn't exist
- * @param {array | string} props - An array of properties or a single property
- * @param {object} obj
- */
+     * Returns the nested value from an object or undefined if it doesn't exist
+     * @param {array | string} props - An array of properties or a single property
+     * @param {object} obj
+     */
 	var path = function path(props, obj) {
 
 		var nested = obj;
@@ -144,11 +144,11 @@ var hanuman = function () {
 	};
 
 	/**
- * Returns a new object by copying properties from the supplied object.  Undefined
- * properties are not copied to the new object.
- * @param {array} props - An array of properties
- * @param {object} obj - The object from which the properties are copied
- */
+     * Returns a new object by copying properties from the supplied object.  Undefined
+     * properties are not copied to the new object.
+     * @param {array} props - An array of properties
+     * @param {object} obj - The object from which the properties are copied
+     */
 	var pick = function pick(props, obj) {
 
 		var copyProperty = function copyProperty(acc, key) {
@@ -162,11 +162,11 @@ var hanuman = function () {
 	};
 
 	/**
- * Returns a new object by copying properties from the supplied object.  Undefined
- * properties are copied to the new object.
- * @param {array} props - An array of properties
- * @param {object} obj - The object from which the properties are copied
- */
+     * Returns a new object by copying properties from the supplied object.  Undefined
+     * properties are copied to the new object.
+     * @param {array} props - An array of properties
+     * @param {object} obj - The object from which the properties are copied
+     */
 	var pickAll = function pickAll(props, obj) {
 
 		var copyProperty = function copyProperty(acc, key) {
@@ -178,13 +178,13 @@ var hanuman = function () {
 	};
 
 	return {
-		curry: curry,
-		forEach: curry(forEach),
-		map: curry(map),
-		filter: curry(filter),
-		reduce: curry(reduce),
-		path: curry(path),
-		pick: curry(pick),
-		pickAll: curry(pickAll)
+		curry    : curry,
+		forEach  : curry(forEach),
+		map      : curry(map),
+		filter   : curry(filter),
+		reduce   : curry(reduce),
+		path     : curry(path),
+		pick     : curry(pick),
+		pickAll  : curry(pickAll)
 	};
 }();
