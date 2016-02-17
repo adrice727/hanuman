@@ -5,14 +5,13 @@
   "main": "hanuman.js",
   "devDependencies": {
     "babel-cli": "^6.5.1",
-    "babel-preset-es2015": "^6.5.0",
-    "eslint-config-airbnb": "^5.0.1",
-    "eslint-plugin-react": "^3.16.1",
+    "babel-preset-es2015-script": "^1.0.0",
     "uglify-js": "^2.6.1"
   },
   "scripts": {
-    "build:babel": "babel -d ./ src/",
-    "build:min": "uglifyjs hanuman.js -o hanuman.min.js",
+    "lint": "eslint ./src/hanuman.js",
+    "build:babel": "babel -d ./dist/ ./src/",
+    "build:min": "uglifyjs ./dist/hanuman.js -o ./dist/hanuman.min.js",
     "build": "npm run build:babel && npm run build:min",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
