@@ -35,7 +35,7 @@ var hanuman = function () {
 	var _forEachArray = function _forEachArray(fn, array) {
 
 		for (var i = 0; i < array.length; i++) {
-			fn(array[i]);
+			fn(array[i], i, array);
 		}
 	};
 
