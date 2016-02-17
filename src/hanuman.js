@@ -1,5 +1,5 @@
 
-var hanuman = (() => {
+let H = (() => {
 
 	/** Accepts a message, and returns a new error */
 	let _error = (message) => new Error(`ø( ^_^ )ø Hanuman: ${message}`);
