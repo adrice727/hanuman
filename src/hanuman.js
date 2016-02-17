@@ -189,6 +189,7 @@
     if (typeof exports === 'object') {
         module.exports = H;
     } else if (typeof define === 'function' && define.amd) { //eslint-disable-line no-undef
+        define(() => H); //eslint-disable-line no-undef
     } else {
         this.H = H;
     }
