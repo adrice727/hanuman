@@ -13,7 +13,7 @@
     "build:babel": "babel -d ./dist/ ./src/",
     "build:min": "uglifyjs ./dist/hanuman.js -o ./dist/hanuman.min.js",
     "build": "npm run build:babel && npm run build:min",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha test/test.js -R nyan"
   },
   "repository": {
     "type": "git",
