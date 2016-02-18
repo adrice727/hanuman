@@ -35,12 +35,12 @@ describe('Hanuman#curry', function(){
 
   it('curries a single argument', () => {
   	let fn = H.curry(addThree)(10)
-    assert.equal(fn(1,2), 13);
+    expect(fn(1,2)).to.equal(13);
   });
 
   it('curries multiple arguments', () => {
   	let fn = H.curry(addThree)(10,11);
-    assert.equal(fn(3), 24);
+    expect(fn(3)).to.equal(24);
   });
 
   it('preserves context', () => {
@@ -58,16 +58,16 @@ describe('Hanuman#forEach', () => {
   	let list = [];
     let fn = (v,i) => { list.push({i, v}); }
     H.forEach(fn, fruit);
-    assert.equal(list[3].i, 3);
-    assert.equal(list[4].v, 'elderberry');
+    expect(list[3].i).to.equal(3);
+    expect(list[4].v).to.equal('elderberry');
   });
 
   it('applies the supplied function to each key-value pair in an object', () => {
     let obj = {};
   	let fn = (v,k) => { obj[k] = v;}
     H.forEach(fn, users[0]);
-    assert.equal(obj.name.first, 'Albert');
-    assert.equal(obj.name.last, 'King');
+    expect(obj.name.first).to.equal('Albert');
+    expect(obj.name.last).to.equal('King');
   });
 });
 
@@ -77,7 +77,8 @@ describe('Hanuman#map', () => {
 
   it('creates a new list using the supplied function', () => {
     let output = H.map(fn, numbers)
-    assert.equal(output[2], numbers[2] * 10);
+    expect(output[2]).to.equal(numbers[2] * 10);
+    expect(output).to.contain(10, 20, 30, 40, 50, 60);
   });
 
   it('returns an empty list if the input list is empty', () => {
@@ -120,6 +121,7 @@ describe('Hanuman#reduce', () => {
 
     let evenSquares = H.reduce(addEvenSquare, {}, numbers);
     expect(evenSquares).to.include.keys('2','4','6');
+    expect(evenSquares).to.not.include.keys('1','3','5');
   });
   //
   // it('should return a list when provided with an array as an accumulator', () => {
@@ -134,6 +136,6 @@ describe('Hanuman#reduce', () => {
 
 });
 
-// afterEach(function (done) {
-//     setTimeout(done, 50);
-// });
+afterEach(function (done) {
+    setTimeout(done, 25);
+});
