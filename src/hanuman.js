@@ -56,7 +56,7 @@
      */
     let forEach = (fn, collection) => {
 
-        if (!Array.isArray(collection) || (typeof collection !== 'object')) {
+        if (!Array.isArray(collection) && (typeof collection !== 'object')) {
             throw _error('Input must be an array or an object'); }
 
         Array.isArray(collection) ? _forEachArray(fn, collection) : _forEachObject(fn, collection);
@@ -121,7 +121,7 @@
     /**
      * Returns the nested value from an object or undefined if it doesn't exist
      * @param {array | string} props - An array of properties or a single property
-     * @param {object} obj
+     * @param {object | array} obj
      */
     let path = (props, obj) => {
 

@@ -60,7 +60,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
      */
     var forEach = function forEach(fn, collection) {
 
-        if (!Array.isArray(collection) || (typeof collection === 'undefined' ? 'undefined' : _typeof(collection)) !== 'object') {
+        if (!Array.isArray(collection) && (typeof collection === 'undefined' ? 'undefined' : _typeof(collection)) !== 'object') {
             throw _error('Input must be an array or an object');
         }
 
@@ -130,7 +130,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     /**
      * Returns the nested value from an object or undefined if it doesn't exist
      * @param {array | string} props - An array of properties or a single property
-     * @param {object} obj
+     * @param {object | array} obj
      */
     var path = function path(props, obj) {
 
