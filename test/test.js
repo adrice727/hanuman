@@ -26,9 +26,6 @@ before(function(){
 });
 
 describe('Hanuman#curry', function(){
-  beforeEach(function(){
-
-  })
 
   it('should curry a single argument', function(){
   	var fn = H.curry(add)(10)
@@ -42,9 +39,6 @@ describe('Hanuman#curry', function(){
 });
 
 describe('Hanuman#forEach', function(){
-  beforeEach(function(){
-
-  })
 
   it('should apply the supplied function to each item in an array', function(){
   	var list = [];
@@ -56,8 +50,21 @@ describe('Hanuman#forEach', function(){
   it('should apply an iterate function to each property in an object', function(){
     var obj = {};
   	var fn = function(v,k) { obj[k] = v;}
-    H.forEach(fn, userList[0])
-    console.log('xoxioxox', obj.name.first);
+    H.forEach(fn, userList[0]);
     assert(obj.name.first === 'Albert', obj.name.last === 'King');
   });
+});
+
+describe('Hanuman#map', function(){
+
+  it('should create a new list using the supplied function', function(){
+  	var fn = function(v) { return v * 10}
+    var output = H.map(fn, numberList)
+    assert.equal(output[2], numberList[2] * 10);
+  });
+
+  it('should return an empty list if the input list is empty', function(){
+    assert.equal(H.map(function(x){ return x; }, []).length, 0);
+  });
+
 });
