@@ -1,11 +1,13 @@
-var assert = require('assert');
-var H = require('../dist/hanuman');
+'use strict';
+
+let assert = require('assert');
+let H = require('../dist/hanuman');
 
 // Data
-var numberList, fruitList, userList, user;
+let numberList, fruitList, userList, user;
 
 // Functions
-var add;
+let add;
 
 before(function(){
 
@@ -19,52 +21,51 @@ before(function(){
   	{id: '7ssc1', name: {first: 'Susan', last: 'Wellington'}, age: 62}
   ];
 
-  add = function(a,b,c) {
-  	return a + b + c;
-  };
+  add = (a,b,c) => a + b + c;
 
 });
 
 describe('Hanuman#curry', function(){
 
-  it('should curry a single argument', function(){
-  	var fn = H.curry(add)(10)
+  it('should curry a single argument', () => {
+  	let fn = H.curry(add)(10)
     assert.equal(fn(1,2), 13);
   });
 
-  it('should curry multiple arguments', function(){
-  	var fn = H.curry(add)(10,11);
+  it('should curry multiple arguments', () => {
+  	let fn = H.curry(add)(10,11);
     assert.equal(fn(3), 24);
   });
 });
 
-describe('Hanuman#forEach', function(){
+describe('Hanuman#forEach', () => {
 
-  it('should apply the supplied function to each item in an array', function(){
-  	var list = [];
-    var fn = function(v,i) { list.push({i:i, v:v}); }
+  it('should apply the supplied function to each item in an array', () => {
+  	let list = [];
+    let fn = (v,i) => { list.push({i, v}); }
     H.forEach(fn, fruitList);
     assert(list[3].i === 3, list[4].v === 'date');
   });
 
-  it('should apply an iterate function to each property in an object', function(){
-    var obj = {};
-  	var fn = function(v,k) { obj[k] = v;}
+  it('should apply an iterate function to each property in an object', () => {
+    let obj = {};
+  	let fn = (v,k) => { obj[k] = v;}
     H.forEach(fn, userList[0]);
     assert(obj.name.first === 'Albert', obj.name.last === 'King');
   });
 });
 
-describe('Hanuman#map', function(){
+describe('Hanuman#map', () => {
 
-  it('should create a new list using the supplied function', function(){
-  	var fn = function(v) { return v * 10}
-    var output = H.map(fn, numberList)
+  let fn = v => v * 10;
+
+  it('should create a new list using the supplied function', () => {
+    let output = H.map(fn, numberList)
     assert.equal(output[2], numberList[2] * 10);
   });
 
-  it('should return an empty list if the input list is empty', function(){
-    assert.equal(H.map(function(x){ return x; }, []).length, 0);
+  it('should return an empty list if the input list is empty', () => {
+    assert.equal(H.map(fn, []).length, 0);
   });
 
 });
