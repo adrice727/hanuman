@@ -112,27 +112,31 @@ describe('Hanuman#reduce', () => {
 
   it('returns an object when provided with an object as an accumulator', () => {
 
-    let addEvenSquare = (acc, v) => {
+    let buildEvenSquaresHash = (acc, v) => {
         if ( isEven(v) ) {
           acc[v] = v * v;
         }
         return acc;
     };
 
-    let evenSquares = H.reduce(addEvenSquare, {}, numbers);
+    let evenSquares = H.reduce(buildEvenSquaresHash, {}, numbers);
     expect(evenSquares).to.include.keys('2','4','6');
     expect(evenSquares).to.not.include.keys('1','3','5');
   });
-  //
-  // it('should return a list when provided with an array as an accumulator', () => {
-  //   let output = H.filter(isEven, numbers)
-  //   assert(output.length === 3, output[2] === 6);
-  // });
-  //
-  // it('should return an object when provided with an object as an accumulator', () => {
-  //   let output = H.filter(isEven, odds);
-  //   assert.equal(output.length, 0);
-  // });
+
+  it('returns a list when provided with an array as an accumulator', () => {
+
+    let buildEvenSquaresArray = (acc, v) => {
+        if ( isEven(v) ) {
+          acc.push(v);
+        }
+        return acc;
+    };
+
+    let evenSquares = H.reduce(buildEvenSquaresArray, [], numbers);
+    expect(evenSquares).to.contain(4, 16, 36);
+    expect(evenSquares).to.not.contain(1, 9, 25);
+  });
 
 });
 
