@@ -20,7 +20,7 @@
             let arity = fn.length;
             let combinedArgs = args.concat(Array.from(arguments));
 
-            if (combinedArgs.length === arity) {
+            if ( combinedArgs.length === arity ) {
                 return fn.apply(this, combinedArgs);
             } else {
                 return curry(fn, combinedArgs);
@@ -70,7 +70,7 @@
      */
     let map = (fn, list) => {
 
-        if (!Array.isArray(list)) {
+        if ( !Array.isArray(list) ) {
             throw _error('Input must be an array'); }
 
         let output = [];
@@ -88,7 +88,7 @@
      */
     let filter = (fn, list) => {
 
-        if (!Array.isArray(list)) {
+        if ( !Array.isArray(list) ) {
             throw _error('Input must be an array'); }
 
         let reducer = (acc, item) => {
@@ -108,7 +108,7 @@
      */
     let reduce = (fn, memo, list) => {
 
-        if (!Array.isArray(list)) {
+        if ( !Array.isArray(list) ) {
             throw _error('Input must be an array'); }
 
         let result = memo;
@@ -128,7 +128,7 @@
         let nested = obj;
         let properties = typeof props === 'string' ? Array.from(props) : props;
 
-        for (let i = 0; i < properties.length; i++) {
+        for ( let i = 0; i < properties.length; i++ ) {
             nested = nested[properties[i]];
             if (nested === undefined) {
                 return nested; }
@@ -147,7 +147,7 @@
     let pick = (props, obj) => {
 
         let copyProperty = (acc, key) => {
-            if (obj.hasOwnProperty(key)) {
+            if ( obj.hasOwnProperty(key) ) {
                 acc[key] = obj[key];
             }
             return acc;
@@ -186,9 +186,9 @@
         pickAll: curry(pickAll)
     };
 
-    if (typeof exports === 'object') {
+    if ( typeof exports === 'object' ) {
         module.exports = H;
-    } else if (typeof define === 'function' && define.amd) { //eslint-disable-line no-undef
+    } else if ( typeof define === 'function' && define.amd ) { //eslint-disable-line no-undef
         define(() => H); //eslint-disable-line no-undef
     } else {
         this.H = H;
