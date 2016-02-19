@@ -140,6 +140,30 @@ describe('Hanuman#reduce', () => {
 
 });
 
+describe('Hanuman#path', () => {
+
+  it('accepts a string and returns the object property', () => {
+    expect(H.path('a', { a: 44})).to.equal(44);
+  });
+
+  it('accepts a string and returns undefined if the property does not exist', () => {
+    expect(H.path('a', { b: 55 })).to.be.undefined;
+  });
+
+  it('accepts an array of keys and returns the nested property', () => {
+    expect(H.path(['a', 'b', 'c'], { a: { b: { c: 44 } } })).to.equal(44);
+  });
+
+  it('accepts an array of keys and returns undefined if the nested property does not exist', () => {
+    expect(H.path(['a', 'b', 'c'], {a: {b: { x: 1 }}})).to.be.undefined;
+  });
+
+  it('works with arrays', () => {
+    expect(H.path([0, 'a'], [{a: 44}, {a: 55}])).to.equal(44);
+  });
+
+});
+
 afterEach(function (done) {
     setTimeout(done, 25);
 });
