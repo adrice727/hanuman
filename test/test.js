@@ -155,11 +155,23 @@ describe('Hanuman#path', () => {
   });
 
   it('accepts an array of keys and returns undefined if the nested property does not exist', () => {
-    expect(H.path(['a', 'b', 'c'], {a: {b: { x: 1 }}})).to.be.undefined;
+    expect(H.path(['a', 'b', 'c'], { a: { b: { x: 1 }}})).to.be.undefined;
   });
 
   it('works with arrays', () => {
-    expect(H.path([0, 'a'], [{a: 44}, {a: 55}])).to.equal(44);
+    expect(H.path([0, 'a'], [{ a: 44 }, { a: 55 }])).to.equal(44);
+  });
+
+});
+
+describe('Hanuman#path', () => {
+
+  it('creates a new object from list of supplied properties', () => {
+    expect(H.pick(['a', 'b'], { a: 44, b: 55, c: 66 })).to.deep.equal({ a: 44, b: 55 });
+  });
+
+  it('does not copy properties not contained in the supplied object', () => {
+    expect(H.pick(['a', 'b'], { a: 44, c: 66 })).to.deep.equal({ a: 44 });
   });
 
 });
