@@ -1,11 +1,12 @@
 'use strict';
 
+// Dependencies
 let assert = require('assert');
 let expect = require('chai').expect;
 let H = require('../dist/hanuman');
 
 // Data
-let numbers, odds, fruit, users, user;
+let numbers, odds, fruit, users;
 
 // Functions
 let addTwo, addThree, isEven;
@@ -49,7 +50,8 @@ describe('Hanuman#curry', function(){
     expect(fn.call(context, 1, 2)).to.equal(25);
   });
 
-  // it should preserve original function length
+  // it should preserve original function length (need to fix)
+
 });
 
 describe('Hanuman#forEach', () => {
@@ -172,6 +174,18 @@ describe('Hanuman#pick', () => {
 
   it('does not copy properties not contained in the supplied object', () => {
     expect(H.pick(['a', 'b'], { a: 44, c: 66 })).to.deep.equal({ a: 44 });
+  });
+
+});
+
+describe('Hanuman#pickAll', () => {
+
+  it('creates a new object from list of supplied properties', () => {
+    expect(H.pickAll(['a', 'b'], { a: 44, b: 55, c: 66 })).to.deep.equal({ a: 44, b: 55 });
+  });
+
+  it('copies all supplied properties whether or not they are contained in the supplied object', () => {
+    expect(H.pickAll(['a', 'b', 'c'], { a: 44, c: 66 })).to.deep.equal({ a: 44, b: undefined, c: 66 });
   });
 
 });
