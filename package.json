@@ -13,7 +13,7 @@
     "lint": "eslint ./src/hanuman.js",
     "build:babel": "babel -d ./dist/ ./src/",
     "build:min": "uglifyjs ./dist/hanuman.js -o ./dist/hanuman.min.js",
-    "build": "npm run build:babel && npm run build:min",
+    "build": "npm run build:babel && npm run build:min && npm run test",
     "test": "mocha test/test.js -R nyan"
   },
   "repository": {
