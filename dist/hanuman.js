@@ -17,6 +17,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
      * Returns a curried version of the supplied function
      * @param {function} fn - The function to be curried
      * @param {...*} [args] - A single argument or series of arguments
+     * TODO Preserve length of original function
      */
     var curry = function curry(fn, args) {
 

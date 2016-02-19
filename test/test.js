@@ -35,7 +35,7 @@ before(function(){
 describe('Hanuman#curry', function(){
 
   it('curries a single argument', () => {
-  	let fn = H.curry(addThree)(10)
+  	let fn = H.curry(addThree)(10);
     expect(fn(1,2)).to.equal(13);
   });
 
@@ -78,7 +78,7 @@ describe('Hanuman#map', () => {
   let fn = v => v * 10;
 
   it('creates a new list using the supplied function', () => {
-    let output = H.map(fn, numbers)
+    let output = H.map(fn, numbers);
     expect(output[2]).to.equal(numbers[2] * 10);
     expect(output).to.contain(10, 20, 30, 40, 50, 60);
   });
@@ -94,7 +94,7 @@ describe('Hanuman#filter', () => {
   let isEven = v => v % 2 === 0;
 
   it('returns a new list containing values that satisfy the provided predicate', () => {
-    let output = H.filter(isEven, numbers)
+    let output = H.filter(isEven, numbers);
     assert.equal(output.length, 3);
     assert.equal(output[2], 6);
   });
