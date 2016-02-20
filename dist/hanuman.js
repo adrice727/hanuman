@@ -54,8 +54,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     };
 
     /**
-     * Applies a function to each item in the collection.  If the collection is an object
-     * the iterator function will receive the key, value, and object.
+     * Applies a function to each item in the collection.  If the collection is an array, the
+     * iterator function will receive the value, index, and array.  If the collection is an object
+     * the iterator function will receive the value, key, and object.
      * @param {function} fn
      * @param {array | object} [args] - A single argument or series of arguments
      */
@@ -129,7 +130,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     };
 
     /**
-     * Returns the nested value from an object or undefined if it doesn't exist
+     * Returns the value from an object, or undefined if it doesn't exist
      * @param {array | string} props - An array of properties or a single property
      * @param {object | array} obj
      */
