@@ -13,6 +13,28 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         return new Error('ø( ^_^ )ø Hanuman: ' + message);
     };
 
+    /** Ensures that the input is of the correct type */
+    var _validateType = function _validateType(type, input) {
+
+        switch (type) {
+            case 'array':
+                if (!Array.isArray(input)) {
+                    throw _error('Input must be an array');
+                }
+                break;
+            case 'object':
+                if ((typeof input === 'undefined' ? 'undefined' : _typeof(input)) !== 'object') {
+                    throw _error('Input must be an object');
+                }
+                break;
+            case 'array-object':
+                if (!Array.isArray(input) && (typeof input === 'undefined' ? 'undefined' : _typeof(input)) !== 'object') {
+                    throw _error('Input must be an array or an object');
+                }
+                break;
+        }
+    };
+
     /**
      * Returns a curried version of the supplied function
      * @param {function} fn - The function to be curried
@@ -62,9 +84,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
      */
     var forEach = function forEach(fn, collection) {
 
-        if (!Array.isArray(collection) && (typeof collection === 'undefined' ? 'undefined' : _typeof(collection)) !== 'object') {
-            throw _error('Input must be an array or an object');
-        }
+        _validateType('array-object', collection);
 
         Array.isArray(collection) ? _forEachArray(fn, collection) : _forEachObject(fn, collection);
     };
@@ -76,17 +96,12 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
      */
     var map = function map(fn, list) {
 
-        if (!Array.isArray(list)) {
-            throw _error('Input must be an array');
-        }
+        _validateType('array', list);
 
-        var output = [];
-
-        forEach(function (value) {
-            return output.push(fn(value));
-        }, list);
-
-        return output;
+        return reduce(function (acc, item) {
+            acc.push(fn(item));
+            return acc;
+        }, [], list);
     };
 
     /**
@@ -96,9 +111,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
      */
     var filter = function filter(fn, list) {
 
-        if (!Array.isArray(list)) {
-            throw _error('Input must be an array');
-        }
+        _validateType('array', list);
 
         var reducer = function reducer(acc, item) {
             !!fn(item) && acc.push(item);
@@ -116,9 +129,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
      */
     var reduce = function reduce(fn, memo, list) {
 
-        if (!Array.isArray(list)) {
-            throw _error('Input must be an array');
-        }
+        _validateType('array', list);
 
         var result = memo;
 
@@ -135,6 +146,8 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
      * @param {object | array} obj
      */
     var path = function path(props, obj) {
+
+        _validateType('object', obj);
 
         var nested = obj;
         var properties = typeof props === 'string' ? Array.from(props) : props;
@@ -156,6 +169,8 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
      * @param {object} obj - The object from which the properties are copied
      */
     var pick = function pick(props, obj) {
+
+        _validateType('object', obj);
 
         var copyProperty = function copyProperty(acc, key) {
             if (obj.hasOwnProperty(key)) {

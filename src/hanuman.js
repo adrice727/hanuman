@@ -4,7 +4,25 @@
     'use strict';
 
     /** Accepts a message, and returns a new error */
-    let _error = (message) => new Error(`ø( ^_^ )ø Hanuman: ${message}`);
+    let _error = message => new Error(`ø( ^_^ )ø Hanuman: ${message}`);
+
+
+    /** Ensures that the input is of the correct type */
+    let _validateType = (type, input) => {
+
+      switch (type) {
+        case 'array':
+          if ( !Array.isArray(input) ) { throw _error('Input must be an array'); }
+          break;
+        case 'object':
+          if ( typeof input !== 'object' ) { throw _error('Input must be an object'); }
+          break;
+        case 'array-object':
+          if (!Array.isArray(input) && (typeof input !== 'object')) { throw _error('Input must be an array or an object'); }
+          break;
+      }
+
+    };
 
     /**
      * Returns a curried version of the supplied function
@@ -58,8 +76,7 @@
      */
     let forEach = (fn, collection) => {
 
-        if (!Array.isArray(collection) && (typeof collection !== 'object')) {
-            throw _error('Input must be an array or an object'); }
+        _validateType('array-object', collection);
 
         Array.isArray(collection) ? _forEachArray(fn, collection) : _forEachObject(fn, collection);
 
@@ -72,14 +89,12 @@
      */
     let map = (fn, list) => {
 
-        if ( !Array.isArray(list) ) {
-            throw _error('Input must be an array'); }
+        _validateType('array', list);
 
-        let output = [];
-
-        forEach((value) => output.push(fn(value)), list);
-
-        return output;
+        return reduce((acc, item) => {
+          acc.push(fn(item));
+          return acc;
+        }, [], list)
 
     };
 
@@ -90,8 +105,7 @@
      */
     let filter = (fn, list) => {
 
-        if ( !Array.isArray(list) ) {
-            throw _error('Input must be an array'); }
+        _validateType('array', list);
 
         let reducer = (acc, item) => {
             !!fn(item) && acc.push(item);
@@ -110,8 +124,7 @@
      */
     let reduce = (fn, memo, list) => {
 
-        if ( !Array.isArray(list) ) {
-            throw _error('Input must be an array'); }
+        _validateType('array', list);
 
         let result = memo;
 
@@ -126,6 +139,8 @@
      * @param {object | array} obj
      */
     let path = (props, obj) => {
+
+        _validateType('object', obj);
 
         let nested = obj;
         let properties = typeof props === 'string' ? Array.from(props) : props;
@@ -147,6 +162,8 @@
      * @param {object} obj - The object from which the properties are copied
      */
     let pick = (props, obj) => {
+
+        _validateType('object', obj);
 
         let copyProperty = (acc, key) => {
             if ( obj.hasOwnProperty(key) ) {
