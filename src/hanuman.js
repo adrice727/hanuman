@@ -1,26 +1,32 @@
-
-;(() => {  //eslint-disable-line no-extra-semi
+/*eslint-disable no-extra-semi */
+;(() => {
+/*eslint-enable no-extra-semi */
 
     'use strict';
 
     /** Accepts a message, and returns a new error */
     let _error = message => new Error(`ø( ^_^ )ø Hanuman: ${message}`);
 
-
     /** Ensures that the input is of the correct type */
     let _validateType = (type, input) => {
 
-      switch (type) {
-        case 'array':
-          if ( !Array.isArray(input) ) { throw _error('Input must be an array'); }
-          break;
-        case 'object':
-          if ( typeof input !== 'object' ) { throw _error('Input must be an object'); }
-          break;
-        case 'array-object':
-          if (!Array.isArray(input) && (typeof input !== 'object')) { throw _error('Input must be an array or an object'); }
-          break;
-      }
+        switch (type) {
+            case 'array':
+                if (!Array.isArray(input)) {
+                    throw _error('Input must be an array');
+                }
+                break;
+            case 'object':
+                if (typeof input !== 'object') {
+                    throw _error('Input must be an object');
+                }
+                break;
+            case 'array-object':
+                if (!Array.isArray(input) && (typeof input !== 'object')) {
+                    throw _error('Input must be an array or an object');
+                }
+                break;
+        }
 
     };
 
@@ -39,7 +45,7 @@
             let arity = fn.length;
             let combinedArgs = args.concat(Array.from(arguments));
 
-            if ( combinedArgs.length === arity ) {
+            if (combinedArgs.length === arity) {
                 return fn.apply(this, combinedArgs);
             } else {
                 return curry(fn, combinedArgs);
@@ -92,9 +98,9 @@
         _validateType('array', list);
 
         return reduce((acc, item) => {
-          acc.push(fn(item));
-          return acc;
-        }, [], list)
+            acc.push(fn(item));
+            return acc;
+        }, [], list);
 
     };
 
@@ -128,7 +134,9 @@
 
         let result = memo;
 
-        _forEachArray(value => { result = fn(result, value); }, list);
+        _forEachArray(value => {
+            result = fn(result, value);
+        }, list);
 
         return result;
     };
@@ -145,10 +153,11 @@
         let nested = obj;
         let properties = typeof props === 'string' ? Array.from(props) : props;
 
-        for ( let i = 0; i < properties.length; i++ ) {
+        for (let i = 0; i < properties.length; i++) {
             nested = nested[properties[i]];
             if (nested === undefined) {
-                return nested; }
+                return nested;
+            }
         }
 
         return nested;
@@ -166,7 +175,7 @@
         _validateType('object', obj);
 
         let copyProperty = (acc, key) => {
-            if ( obj.hasOwnProperty(key) ) {
+            if (obj.hasOwnProperty(key)) {
                 acc[key] = obj[key];
             }
             return acc;
@@ -205,10 +214,12 @@
         pickAll: curry(pickAll)
     };
 
-    if ( typeof exports === 'object' ) {
+    if (typeof exports === 'object') {
         module.exports = H;
-    } else if ( typeof define === 'function' && define.amd ) { //eslint-disable-line no-undef
-        define(() => H); //eslint-disable-line no-undef
+        /*eslint-disable no-undef */
+    } else if (typeof define === 'function' && define.amd) {
+        define(() => H);
+        /*eslint-disable no-undef */
     } else {
         this.H = H;
     }
