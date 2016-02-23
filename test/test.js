@@ -37,6 +37,7 @@ describe('Hanuman#curry', function(){
   it('curries a single argument', () => {
   	let fn = H.curry(addThree)(10);
     expect(fn(1,2)).to.equal(13);
+    expect(fn(1)(2)).to.equal(13);
   });
 
   it('curries multiple arguments', () => {
@@ -49,8 +50,6 @@ describe('Hanuman#curry', function(){
     let fn = H.curry(function(a,b) {return a + b + this.c});
     expect(fn.call(context, 1, 2)).to.equal(25);
   });
-
-  // it should preserve original function length (need to fix)
 
 });
 
@@ -79,12 +78,12 @@ describe('Hanuman#map', () => {
 
   it('creates a new list using the supplied function', () => {
     let output = H.map(fn, numbers);
-    expect(output[2]).to.equal(numbers[2] * 10);
+    expect(output[2]).to.equal(fn(numbers[2]));
     expect(output).to.contain(10, 20, 30, 40, 50, 60);
   });
 
   it('returns an empty list if the input list is empty', () => {
-    assert.equal(H.map(fn, []).length, 0);
+    expect(H.map(fn, [])).to.be.empty;
   });
 
 });
@@ -95,13 +94,13 @@ describe('Hanuman#filter', () => {
 
   it('returns a new list containing values that satisfy the provided predicate', () => {
     let output = H.filter(isEven, numbers);
-    assert.equal(output.length, 3);
-    assert.equal(output[2], 6);
+    expect(output).to.have.lengthOf(3)
+    expect(output[2]).to.equal(6);
   });
 
   it('returns an empty list if none of the items in the list satisfy the predicate', () => {
     let output = H.filter(isEven, odds);
-    assert.equal(output.length, 0);
+    expect(output).to.be.empty;
   });
 
 });
