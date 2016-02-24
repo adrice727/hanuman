@@ -1,4 +1,5 @@
-##### ø( &#94;_&#94; )ø ####
+ø( &#94;_&#94; )ø
+-----------------
 
 I'm a big fan of [Ramda](http://ramdajs.com/).  It's the reason why I became interested in functional programming, and I've used it in numerous project.  However, I can't always justify it's use, either due to it's size or because  I'm working on an existing project which already uses another utility library.  So, I decided to write my own small library that provides the functionality that I find myself using most often in [Ramda](http://ramdajs.com/), at less than one-tenth the size (3kb vs 40kb for minified versions).
 
@@ -18,7 +19,7 @@ For use in the Browser:
 ```
 
 ###Methods:
-#### `curry`
+### `curry`
 
 ***Returns a curried version of the supplied function***
 ######`function`  **&rarr;**  `function`
@@ -29,7 +30,8 @@ let addTen = H.curry(add)(10);
 addTen(2,3) // returns 15
 addTen(2)(3) // returns 15
 ```
-#### `forEach`
+####All of the following methods are automatically currried:
+### `forEach`
 
 ***Applies a function to each item in the collection.  If the collection is an array, the  iterator function will receive the value, index, and array.  If the collection is an object, the iterator function will receive the value, key, and object.***
 ######`function`  **&rarr;**  `array`    **&rarr;**  `*`
@@ -46,7 +48,7 @@ let user = {id: '28jd2', name: {first: 'Albert' , last: 'King' }, age: 55};
 H.forEach(logObject, user) // logs 'id: 28jd2', 'name: [object Object]', 'age: 55'
 
 ```
-#### `map`
+### `map`
 ***Creates a new list by applying a function to each item in the list***
 ######`function`  **&rarr;**  `array`    **&rarr;**  `array`
 ```javascript
@@ -55,7 +57,7 @@ let numbers = [1, 2, 3, 4, 5];
 
 H.map(square, numbers); // returns [1, 4, 9, 16, 25]
 ```
-#### `filter`
+### `filter`
 ***Applies a predicate function to a list of values and returns a new list of values which pass the test***
 ######`function`  **&rarr;**  `array`    **&rarr;**  `array`
 ```javascript
@@ -65,7 +67,7 @@ let numbers = [1, 2, 3, 4, 5];
 let getEvens = H.filter(isEven);
 getEvens(numbers); // returns [2, 4]
 ```
-#### `reduce`
+### `reduce`
 ***Applies an iterator function to an accumulator and each value in a a list, returning a single value***
 ######`function`  **&rarr;**  `*`    **&rarr;**  `*`
 ```javascript
@@ -85,7 +87,7 @@ let evenSquares = (acc, v) => {
 
 H.reduce(evenSquares, {}, numbers); // returns { 2:4, 4:16 }
 ```
-#### `path`
+### `path`
 ***Returns a property from an object, or undefined if it doesn't exist.  An array of keys can be passed as the first object to retrieve a nested property.***
 ######`array | string`  **&rarr;**  `object`    **&rarr;**  `* | undefined`
 ```javascript
@@ -98,7 +100,7 @@ getFirstName(user); // returns 'Albert'
 
 H.path(['name', 'middle'], user); // returns undefined
 ```
-#### `pick`
+### `pick`
 ***Returns a new object by copying properties from the supplied object.  Undefined properties are not copied to the new object.***
 ######`array`  **&rarr;**  `object`    **&rarr;**  `object`
 ```javascript
@@ -107,7 +109,7 @@ let fruit = {a: 'apple', b: 'banana', c: 'cherry', d: 'date', e: 'elderberry'};
 H.pick(['a', 'b', 'd'], fruit) // returns {a: 'apple', b: 'banana', d: 'date'};
 H.pick(['a', 'f'], fruit) // returns {a: 'apple'};
 ```
-#### `pickAll`
+### `pickAll`
 ***Returns a new object by copying properties from the supplied object.  Undefined properties are copied to the new object.***
 ######`array`  **&rarr;**  `object`    **&rarr;**  `object`
 ```javascript
