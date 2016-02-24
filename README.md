@@ -1,7 +1,7 @@
 ø( &#94;_&#94; )ø
 -----------------
 
-I'm a big fan of [Ramda](http://ramdajs.com/).  It's the reason why I became interested in functional programming, and I've used it in numerous project.  However, I can't always justify it's use, either due to it's size or because  I'm working on an existing project which already uses another utility library.  So, I decided to write my own small library that provides the functionality that I find myself using most often in [Ramda](http://ramdajs.com/), at less than one-tenth the size (3kb vs 40kb for minified versions).
+I'm a big fan of [Ramda](http://ramdajs.com/).  It's the reason why I became interested in functional programming, and I've used it in numerous projects.  However, I can't always justify it's use, either due to it's size or because  I'm working on an existing project which already uses another utility library.  So, I decided to write my own small library that provides the functionality that I find myself using most often in [Ramda](http://ramdajs.com/), at less than one-tenth the size (3kb vs 40kb for minified versions).
 
 ###Installation:
 ```bash
