@@ -118,3 +118,20 @@ let fruit = {a: 'apple', b: 'banana', c: 'cherry', d: 'date', e: 'elderberry'};
 H.pickAll(['a', 'b', 'd'], fruit) // returns {a: 'apple', b: 'banana', d: 'date'};
 H.pickAll(['a', 'f'], fruit) // returns {a: 'apple', f: undefined};
 ```
+
+### `pipe`
+***Creates a composed function by chaining the provided functions from left to right.  The first function in the chain may accept any number of arguments.  The remaining functions may only accept a single argument.***
+######`...functions`  **&rarr;**  `function`
+```javascript
+let double = x => x * 2;
+let subtractTen = x => x - 10;
+
+H.pipe(subtractTen, double)(22) // returns 24
+
+let evens = [2, 4, 6, 8, 10, 12];
+let addTwo = (a,b) => a + b;
+
+let doubleFirstPlus44 = H.pipe(H.path(0), double, H.curry(addTwo)(44));
+
+doubleFirstPlus44(evens) // returns 48
+```
