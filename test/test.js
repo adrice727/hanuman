@@ -6,14 +6,15 @@ let expect = require('chai').expect;
 let H = require('../dist/hanuman');
 
 // Data
-let numbers, odds, fruit, users;
+let numbers, odds, evens, fruit, users;
 
 // Functions
-let addTwo, addThree, isEven;
+let addTwo, addThree, isEven, double, subtractTen;
 
 before(function(){
 
   numbers = [1, 2, 3, 4, 5, 6];
+  evens = [2, 4, 6, 8, 10, 12];
   odds = [1, 3, 5, 7, 9, 11];
 
   fruit = ['apple', 'banana', 'cherry', 'date', 'elderberry', 'fig'];
@@ -29,6 +30,10 @@ before(function(){
   addThree = (a,b,c) => a + b + c;
 
   isEven = v => v % 2 === 0;
+
+  double = x => x * 2;
+
+  subtractTen = x => x - 10;
 
 });
 
@@ -198,6 +203,23 @@ describe('Hanuman#pickAll', () => {
 
   it('copies all supplied properties whether or not they are contained in the supplied object', () => {
     expect(H.pickAll(['a', 'b', 'c'], { a: 44, c: 66 })).to.deep.equal({ a: 44, b: undefined, c: 66 });
+  });
+
+});
+
+describe('Hanuman#pipe', () => {
+
+  it('creates a left-to-right composed function', () => {
+
+    expect(H.pipe(subtractTen, double)(22)).to.equal(24);
+
+  });
+
+  it('accepts curried functions', () => {
+
+    expect(H.pipe(H.path(0), double, subtractTen)(evens)).to.equal(-6);
+    expect(H.pipe(H.path(0), double, H.curry(addTwo)(44))(evens)).to.equal(48);
+
   });
 
 });

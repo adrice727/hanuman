@@ -14,22 +14,32 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         return new Error('ø( ^_^ )ø Hanuman: ' + message);
     };
 
+    /** Check for array */
+    var _isArray = function _isArray(input) {
+        return Array.isArray(input);
+    };
+
+    /** Check for object */
+    var _isObject = function _isObject(input) {
+        return (typeof input === 'undefined' ? 'undefined' : _typeof(input)) === 'object';
+    };
+
     /** Ensures that the input is of the correct type */
     var _validateType = function _validateType(type, input) {
 
         switch (type) {
             case 'array':
-                if (!Array.isArray(input)) {
+                if (!_isArray(input)) {
                     throw _error('Input must be an array');
                 }
                 break;
             case 'object':
-                if ((typeof input === 'undefined' ? 'undefined' : _typeof(input)) !== 'object') {
+                if (!_isObject(input)) {
                     throw _error('Input must be an object');
                 }
                 break;
             case 'array-object':
-                if (!Array.isArray(input) && (typeof input === 'undefined' ? 'undefined' : _typeof(input)) !== 'object') {
+                if (!_isArray(input) && !_isObject(input)) {
                     throw _error('Input must be an array or an object');
                 }
                 break;
@@ -199,6 +209,33 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         return reduce(copyProperty, {}, props);
     };
 
+    /**
+     * Returns a composed function by chaining the provided functions from left
+     * to right.  The first function in the chain may accept any number of
+     * arguments.  The remaining functions may only accept a single argument.
+     * @param {...function} fns
+     */
+    var pipe = function pipe() {
+        for (var _len = arguments.length, fns = Array(_len), _key = 0; _key < _len; _key++) {
+            fns[_key] = arguments[_key];
+        }
+
+        return function () {
+            for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+                args[_key2] = arguments[_key2];
+            }
+
+            var pipe = function pipe(acc, fn) {
+
+                var params = _isObject(acc) ? Array.from(acc) : [acc];
+
+                return fn.apply(fn, params);
+            };
+
+            return reduce(pipe, args, fns);
+        };
+    };
+
     var H = {
         curry: curry,
         forEach: curry(forEach),
@@ -207,7 +244,8 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         reduce: curry(reduce),
         path: curry(path),
         pick: curry(pick),
-        pickAll: curry(pickAll)
+        pickAll: curry(pickAll),
+        pipe: pipe
     };
 
     if ((typeof exports === 'undefined' ? 'undefined' : _typeof(exports)) === 'object') {
