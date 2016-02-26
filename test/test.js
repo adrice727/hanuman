@@ -111,6 +111,19 @@ describe('Hanuman#reduce', () => {
     expect(H.reduce(addTwo, 0, numbers)).to.equal(21);
   });
 
+  it('passes the indices to the reducer function', () => {
+
+    let convertToObj = (acc, v, i) => {
+      acc[i] = v;
+      return acc;
+    };
+
+    let output = H.reduce(convertToObj, {}, numbers);
+    expect(output).to.include.keys('0','1','2','3','4','5');
+    expect(output[0]).to.equal(1);
+    expect(output[4]).to.equal(5);
+  });
+
   it('returns an object when provided with an object as an accumulator', () => {
 
     let buildEvenSquaresHash = (acc, v) => {

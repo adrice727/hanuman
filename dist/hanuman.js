@@ -1,14 +1,10 @@
 var _this = this;
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function(obj) {
-    return typeof obj;
-} : function(obj) {
-    return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
-};
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
 /*eslint-disable no-extra-semi */
-;(function() {
-/*eslint-enable no-extra-semi */
+;(function () {
+    /*eslint-enable no-extra-semi */
 
     'use strict';
 
@@ -50,7 +46,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
         args = args || [];
 
-        return function() {
+        return function () {
 
             var arity = fn.length;
             var combinedArgs = args.concat(Array.from(arguments));
@@ -103,7 +99,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
         _validateType('array', list);
 
-        return reduce(function(acc, item) {
+        return reduce(function (acc, item) {
             acc.push(fn(item));
             return acc;
         }, [], list);
@@ -138,8 +134,8 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
         var result = memo;
 
-        _forEachArray(function(value) {
-            result = fn(result, value);
+        _forEachArray(function (value, i) {
+            result = fn(result, value, i);
         }, list);
 
         return result;
@@ -218,11 +214,11 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         module.exports = H;
         /*eslint-disable no-undef */
     } else if (typeof define === 'function' && define.amd) {
-        define(function() {
-            return H;
-        });
-        /*eslint-disable no-undef */
-    } else {
-        _this.H = H;
-    }
+            define(function () {
+                return H;
+            });
+            /*eslint-disable no-undef */
+        } else {
+                _this.H = H;
+            }
 })(this);

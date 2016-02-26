@@ -134,8 +134,8 @@
 
         let result = memo;
 
-        _forEachArray(value => {
-            result = fn(result, value);
+        _forEachArray((value, i) => {
+            result = fn(result, value, i);
         }, list);
 
         return result;
