@@ -25,5 +25,12 @@
   "bugs": {
     "url": "https://github.com/adrice727/hanuman/issues"
   },
-  "homepage": "https://github.com/adrice727/hanuman#readme"
+  "homepage": "https://github.com/adrice727/hanuman#readme",
+  "keywords": [
+    "functional",
+    "util",
+    "utility",
+    "helper",
+    "monkey"
+  ]
 }
