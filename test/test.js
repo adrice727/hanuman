@@ -213,6 +213,23 @@ describe('Hanuman#pipe', () => {
 
     expect(H.pipe(subtractTen, double)(22)).to.equal(24);
 
+    let currentYear = new Date().getFullYear();
+
+    let getFullName = input => {
+      let user = H.pick(['age'], input);
+      user.fullName = `${H.path(['name', 'first'],input)} ${H.path(['name', 'last'], input)}`;
+      return user;
+    }
+
+    let getBirthYear = input => {
+      let user = H.pick(['fullName'], input);
+      user.birthYear = currentYear - input.age;
+      return user;
+    }
+
+    let albert = users[0];
+    expect(H.pipe(getFullName, getBirthYear)(albert)).to.deep.equal({fullName: 'Albert King', birthYear: currentYear - albert.age});
+
   });
 
   it('accepts curried functions', () => {

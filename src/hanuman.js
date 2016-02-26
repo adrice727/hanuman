@@ -219,11 +219,8 @@
 
         return (...args) => {
 
-            let pipe = (acc, fn) => {
-
-                let params = _isObject(acc) ? Array.from(acc) : [acc];
-
-                return fn.apply(fn, params);
+            let pipe = (acc, fn, i) => {
+                return _isArray(acc) ? fn.apply(this, acc) : fn.call(this, acc);
             };
 
             return reduce(pipe, args, fns);

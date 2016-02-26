@@ -225,11 +225,8 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
                 args[_key2] = arguments[_key2];
             }
 
-            var pipe = function pipe(acc, fn) {
-
-                var params = _isObject(acc) ? Array.from(acc) : [acc];
-
-                return fn.apply(fn, params);
+            var pipe = function pipe(acc, fn, i) {
+                return _isArray(acc) ? fn.apply(_this, acc) : fn.call(_this, acc);
             };
 
             return reduce(pipe, args, fns);
