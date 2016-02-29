@@ -116,14 +116,38 @@
         return nested;
     };
 
-    /**
-     * Creates a new list by applying a function to each item in the list
-     * @param {function} fn - The function to be called on each element
-     * @param {array} list - The list to be iterated over
-     */
-    let map = (fn, list) => {
 
-        _validateType('array', list);
+    /** Map array */
+    let _mapArray = (fn, array) => {
+
+      return reduce((acc, item) => {
+          acc.push(fn(item));
+          return acc;
+      }, [], array);
+
+    };
+
+    /** Map object */
+    let _mapObject = (fn, obj) => {
+
+      return reduce((acc, key) => {
+          acc[key] = fn(obj[key])
+          return acc;
+      }, {}, Object.keys(obj));
+
+    };
+
+    /**
+     * Creates a new array, or a new object, by applying a function to each item item in
+     * the list, or key/value pair
+     * @param {function} fn - The function to be called on each element
+     * @param {array | object} list - The list to be iterated over
+     */
+    let map = (fn, collection) => {
+
+        _validateType('array-object', collection);
+
+        return _isArray(collection) ? _mapArray(fn, collection) : _mapObject(fn, collection);
 
         return reduce((acc, item) => {
             acc.push(fn(item));

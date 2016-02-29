@@ -122,14 +122,35 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         return nested;
     };
 
-    /**
-     * Creates a new list by applying a function to each item in the list
-     * @param {function} fn - The function to be called on each element
-     * @param {array} list - The list to be iterated over
-     */
-    var map = function map(fn, list) {
+    /** Map array */
+    var _mapArray = function _mapArray(fn, array) {
 
-        _validateType('array', list);
+        return reduce(function (acc, item) {
+            acc.push(fn(item));
+            return acc;
+        }, [], array);
+    };
+
+    /** Map object */
+    var _mapObject = function _mapObject(fn, obj) {
+
+        return reduce(function (acc, key) {
+            acc[key] = fn(obj[key]);
+            return acc;
+        }, {}, Object.keys(obj));
+    };
+
+    /**
+     * Creates a new array, or a new object, by applying a function to each item item in
+     * the list, or key/value pair
+     * @param {function} fn - The function to be called on each element
+     * @param {array | object} list - The list to be iterated over
+     */
+    var map = function map(fn, collection) {
+
+        _validateType('array-object', collection);
+
+        return _isArray(collection) ? _mapArray(fn, collection) : _mapObject(fn, collection);
 
         return reduce(function (acc, item) {
             acc.push(fn(item));

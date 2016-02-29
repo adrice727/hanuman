@@ -64,13 +64,16 @@ getFirstName(user); // returns 'Albert'
 H.get(['name', 'middle'], user); // returns undefined
 ```
 ### `map`
-***Creates a new list by applying a function to each item in the list***
-######`function`  **&rarr;**  `array`    **&rarr;**  `array`
+***Creates a new array or object by applying a function to each value in the  array or object property***
+######`function`  **&rarr;**  `array | object`    **&rarr;**  `array | object`
 ```javascript
 let square  = (a) => a * a;
 let numbers = [1, 2, 3, 4, 5];
 
 H.map(square, numbers); // returns [1, 4, 9, 16, 25]
+
+let double = x => x * 2;
+H.map(double, { a: 1, b: 2, c: 3 }); // returns { a: 2, b: 4, c: 6 }
 ```
 ### `filter`
 ***Applies a predicate function to a list of values and returns a new list of values which pass the test***

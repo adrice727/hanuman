@@ -104,16 +104,25 @@ describe('Hanuman#get', () => {
 
 describe('Hanuman#map', () => {
 
-  let fn = v => v * 10;
+  let timesTen = v => v * 10;
 
   it('creates a new list using the supplied function', () => {
-    let output = H.map(fn, numbers);
-    expect(output[2]).to.equal(fn(numbers[2]));
+    let output = H.map(timesTen, numbers);
+    expect(output[2]).to.equal(timesTen(numbers[2]));
     expect(output).to.contain(10, 20, 30, 40, 50, 60);
   });
 
   it('returns an empty list if the input list is empty', () => {
-    expect(H.map(fn, [])).to.be.empty;
+    expect(H.map(timesTen, [])).to.be.empty;
+  });
+
+  it('creates a new object using the supplied function', () => {
+    let output = H.map(double, { a: 1, b: 2, c: 3 });
+    expect(output).to.deep.equal({ a: 2, b: 4, c: 6 })
+  });
+
+  it('returns an empty object if the input object is empty', () => {
+    expect(H.map(double, {})).to.be.empty;
   });
 
 });
