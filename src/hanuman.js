@@ -95,6 +95,28 @@
     };
 
     /**
+     * Returns the value from an object, or undefined if it doesn't exist
+     * @param {string | array} props - An array of properties or a single property
+     * @param {object | array} obj
+     */
+    let get = (props, obj) => {
+
+        _validateType('object', obj);
+
+        let nested = obj;
+        let properties = typeof props === 'string' ? Array.from(props) : props;
+
+        for (let i = 0; i < properties.length; i++) {
+            nested = nested[properties[i]];
+            if (nested === undefined) {
+                return nested;
+            }
+        }
+
+        return nested;
+    };
+
+    /**
      * Creates a new list by applying a function to each item in the list
      * @param {function} fn - The function to be called on each element
      * @param {array} list - The list to be iterated over
@@ -146,29 +168,6 @@
 
         return result;
     };
-
-    /**
-     * Returns the value from an object, or undefined if it doesn't exist
-     * @param {array | string} props - An array of properties or a single property
-     * @param {object | array} obj
-     */
-    let path = (props, obj) => {
-
-        _validateType('object', obj);
-
-        let nested = obj;
-        let properties = typeof props === 'string' ? Array.from(props) : props;
-
-        for (let i = 0; i < properties.length; i++) {
-            nested = nested[properties[i]];
-            if (nested === undefined) {
-                return nested;
-            }
-        }
-
-        return nested;
-    };
-
 
     /**
      * Returns a new object by copying properties from the supplied object.  Undefined
@@ -233,10 +232,10 @@
     let H = {
         curry,
         forEach: curry(forEach),
+        get: curry(get),
         map: curry(map),
         filter: curry(filter),
         reduce: curry(reduce),
-        path: curry(path),
         pick: curry(pick),
         pickAll: curry(pickAll),
         pipe: pipe

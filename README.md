@@ -50,6 +50,19 @@ let user = {id: '28jd2', name: {first: 'Albert' , last: 'King' }, age: 55};
 H.forEach(logObject, user) // logs 'id: 28jd2', 'name: [object Object]', 'age: 55'
 
 ```
+### `get`
+***Returns a property from an object, or undefined if it doesn't exist.  An array of keys can be passed as the first object to retrieve a nested property.***
+######`string | array`  **&rarr;**  `object`    **&rarr;**  `* | undefined`
+```javascript
+let user = {id: '28jd2', name: {first: 'Albert' , last: 'King' }, age: 55};
+
+H.get('id', user); // returns '28jd2'
+
+let getFirstName = H.get(['name', 'first']);
+getFirstName(user); // returns 'Albert'
+
+H.get(['name', 'middle'], user); // returns undefined
+```
 ### `map`
 ***Creates a new list by applying a function to each item in the list***
 ######`function`  **&rarr;**  `array`    **&rarr;**  `array`
@@ -88,19 +101,6 @@ let evenSquares = (acc, v) => {
 }
 
 H.reduce(evenSquares, {}, numbers); // returns { 2:4, 4:16 }
-```
-### `path`
-***Returns a property from an object, or undefined if it doesn't exist.  An array of keys can be passed as the first object to retrieve a nested property.***
-######`array | string`  **&rarr;**  `object`    **&rarr;**  `* | undefined`
-```javascript
-let user = {id: '28jd2', name: {first: 'Albert' , last: 'King' }, age: 55};
-
-H.path('id', user); // returns '28jd2'
-
-let getFirstName = H.path(['name', 'first']);
-getFirstName(user); // returns 'Albert'
-
-H.path(['name', 'middle'], user); // returns undefined
 ```
 ### `pick`
 ***Returns a new object by copying properties from the supplied object.  Undefined properties are not copied to the new object.***

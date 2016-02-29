@@ -101,6 +101,28 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     };
 
     /**
+     * Returns the value from an object, or undefined if it doesn't exist
+     * @param {string | array} props - An array of properties or a single property
+     * @param {object | array} obj
+     */
+    var get = function get(props, obj) {
+
+        _validateType('object', obj);
+
+        var nested = obj;
+        var properties = typeof props === 'string' ? Array.from(props) : props;
+
+        for (var i = 0; i < properties.length; i++) {
+            nested = nested[properties[i]];
+            if (nested === undefined) {
+                return nested;
+            }
+        }
+
+        return nested;
+    };
+
+    /**
      * Creates a new list by applying a function to each item in the list
      * @param {function} fn - The function to be called on each element
      * @param {array} list - The list to be iterated over
@@ -149,28 +171,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         }, list);
 
         return result;
-    };
-
-    /**
-     * Returns the value from an object, or undefined if it doesn't exist
-     * @param {array | string} props - An array of properties or a single property
-     * @param {object | array} obj
-     */
-    var path = function path(props, obj) {
-
-        _validateType('object', obj);
-
-        var nested = obj;
-        var properties = typeof props === 'string' ? Array.from(props) : props;
-
-        for (var i = 0; i < properties.length; i++) {
-            nested = nested[properties[i]];
-            if (nested === undefined) {
-                return nested;
-            }
-        }
-
-        return nested;
     };
 
     /**
@@ -236,10 +236,10 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     var H = {
         curry: curry,
         forEach: curry(forEach),
+        get: curry(get),
         map: curry(map),
         filter: curry(filter),
         reduce: curry(reduce),
-        path: curry(path),
         pick: curry(pick),
         pickAll: curry(pickAll),
         pipe: pipe

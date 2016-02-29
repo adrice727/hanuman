@@ -77,6 +77,31 @@ describe('Hanuman#forEach', () => {
   });
 });
 
+
+describe('Hanuman#get', () => {
+
+  it('accepts a string and returns the object property', () => {
+    expect(H.get('a', { a: 44})).to.equal(44);
+  });
+
+  it('accepts a string and returns undefined if the property does not exist', () => {
+    expect(H.get('a', { b: 55 })).to.be.undefined;
+  });
+
+  it('accepts an array of keys and returns the nested property', () => {
+    expect(H.get(['a', 'b', 'c'], { a: { b: { c: 44 } } })).to.equal(44);
+  });
+
+  it('accepts an array of keys and returns undefined if the nested property does not exist', () => {
+    expect(H.get(['a', 'b', 'c'], { a: { b: { x: 1 }}})).to.be.undefined;
+  });
+
+  it('works with arrays', () => {
+    expect(H.get([0, 'a'], [{ a: 44 }, { a: 55 }])).to.equal(44);
+  });
+
+});
+
 describe('Hanuman#map', () => {
 
   let fn = v => v * 10;
@@ -159,30 +184,6 @@ describe('Hanuman#reduce', () => {
 
 });
 
-describe('Hanuman#path', () => {
-
-  it('accepts a string and returns the object property', () => {
-    expect(H.path('a', { a: 44})).to.equal(44);
-  });
-
-  it('accepts a string and returns undefined if the property does not exist', () => {
-    expect(H.path('a', { b: 55 })).to.be.undefined;
-  });
-
-  it('accepts an array of keys and returns the nested property', () => {
-    expect(H.path(['a', 'b', 'c'], { a: { b: { c: 44 } } })).to.equal(44);
-  });
-
-  it('accepts an array of keys and returns undefined if the nested property does not exist', () => {
-    expect(H.path(['a', 'b', 'c'], { a: { b: { x: 1 }}})).to.be.undefined;
-  });
-
-  it('works with arrays', () => {
-    expect(H.path([0, 'a'], [{ a: 44 }, { a: 55 }])).to.equal(44);
-  });
-
-});
-
 describe('Hanuman#pick', () => {
 
   it('creates a new object from list of supplied properties', () => {
@@ -217,7 +218,7 @@ describe('Hanuman#pipe', () => {
 
     let getFullName = input => {
       let user = H.pick(['age'], input);
-      user.fullName = `${H.path(['name', 'first'],input)} ${H.path(['name', 'last'], input)}`;
+      user.fullName = `${H.get(['name', 'first'],input)} ${H.get(['name', 'last'], input)}`;
       return user;
     }
 
@@ -234,8 +235,8 @@ describe('Hanuman#pipe', () => {
 
   it('accepts curried functions', () => {
 
-    expect(H.pipe(H.path(0), double, subtractTen)(evens)).to.equal(-6);
-    expect(H.pipe(H.path(0), double, H.curry(addTwo)(44))(evens)).to.equal(48);
+    expect(H.pipe(H.get(0), double, subtractTen)(evens)).to.equal(-6);
+    expect(H.pipe(H.get(0), double, H.curry(addTwo)(44))(evens)).to.equal(48);
 
   });
 
