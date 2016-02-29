@@ -2,7 +2,7 @@
 -----------------
 
  - Inspired by [Ramda](http://ramdajs.com/)
- - 3kb minified
+ - 4kb minified
  - Methods are automatically curried
 
 ###Installation:
