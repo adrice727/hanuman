@@ -116,24 +116,23 @@
         return nested;
     };
 
-
     /** Map array */
     let _mapArray = (fn, array) => {
 
-      return reduce((acc, item) => {
-          acc.push(fn(item));
-          return acc;
-      }, [], array);
+        return reduce((acc, item) => {
+            acc.push(fn(item));
+            return acc;
+        }, [], array);
 
     };
 
     /** Map object */
     let _mapObject = (fn, obj) => {
 
-      return reduce((acc, key) => {
-          acc[key] = fn(obj[key])
-          return acc;
-      }, {}, Object.keys(obj));
+        return reduce((acc, key) => {
+            acc[key] = fn(obj[key]);
+            return acc;
+        }, {}, Object.keys(obj));
 
     };
 
@@ -148,12 +147,6 @@
         _validateType('array-object', collection);
 
         return _isArray(collection) ? _mapArray(fn, collection) : _mapObject(fn, collection);
-
-        return reduce((acc, item) => {
-            acc.push(fn(item));
-            return acc;
-        }, [], list);
-
     };
 
     /**
@@ -193,6 +186,19 @@
         return result;
     };
 
+    /** Copies a property from a source object to an accumulator object.
+    * @param {object} obj - The source object
+    * @param {object} acc - The accumulator (destination) object
+    * @param {string} key - The key of the k/v pair to copy
+    * @param {boolean} all - Should undefined properties be copied
+    */
+    let _copyProperty = (obj, acc, key, all) => {
+        if ( all || obj.hasOwnProperty(key) ) {
+            acc[key] = obj[key];
+        }
+        return acc;
+    };
+
     /**
      * Returns a new object by copying properties from the supplied object.  Undefined
      * properties are not copied to the new object.
@@ -203,15 +209,9 @@
 
         _validateType('object', obj);
 
-        let copyProperty = (acc, key) => {
-            if (obj.hasOwnProperty(key)) {
-                acc[key] = obj[key];
-            }
-            return acc;
-        };
+        let copyProperty = (acc, key) => _copyProperty(obj, acc, key, false);
 
         return reduce(copyProperty, {}, props);
-
     };
 
     /**
@@ -222,13 +222,11 @@
      */
     let pickAll = (props, obj) => {
 
-        let copyProperty = (acc, key) => {
-            acc[key] = obj[key];
-            return acc;
-        };
+        _validateType('object', obj);
+
+        let copyProperty = (acc, key) => _copyProperty(obj, acc, key, true);
 
         return reduce(copyProperty, {}, props);
-
     };
 
 
@@ -242,7 +240,7 @@
 
         return (...args) => {
 
-            let pipe = (acc, fn, i) => {
+            let pipe = (acc, fn) => {
                 return _isArray(acc) ? fn.apply(this, acc) : fn.call(this, acc);
             };
 

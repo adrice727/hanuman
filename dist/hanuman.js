@@ -151,11 +151,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         _validateType('array-object', collection);
 
         return _isArray(collection) ? _mapArray(fn, collection) : _mapObject(fn, collection);
-
-        return reduce(function (acc, item) {
-            acc.push(fn(item));
-            return acc;
-        }, [], list);
     };
 
     /**
@@ -194,6 +189,19 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         return result;
     };
 
+    /** Copies a property from a source object to an accumulator object.
+    * @param {object} obj - The source object
+    * @param {object} acc - The accumulator (destination) object
+    * @param {string} key - The key of the k/v pair to copy
+    * @param {boolean} all - Should undefined properties be copied
+    */
+    var _copyProperty = function _copyProperty(obj, acc, key, all) {
+        if (all || obj.hasOwnProperty(key)) {
+            acc[key] = obj[key];
+        }
+        return acc;
+    };
+
     /**
      * Returns a new object by copying properties from the supplied object.  Undefined
      * properties are not copied to the new object.
@@ -205,10 +213,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         _validateType('object', obj);
 
         var copyProperty = function copyProperty(acc, key) {
-            if (obj.hasOwnProperty(key)) {
-                acc[key] = obj[key];
-            }
-            return acc;
+            return _copyProperty(obj, acc, key, false);
         };
 
         return reduce(copyProperty, {}, props);
@@ -222,9 +227,10 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
      */
     var pickAll = function pickAll(props, obj) {
 
+        _validateType('object', obj);
+
         var copyProperty = function copyProperty(acc, key) {
-            acc[key] = obj[key];
-            return acc;
+            return _copyProperty(obj, acc, key, true);
         };
 
         return reduce(copyProperty, {}, props);
@@ -246,7 +252,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
                 args[_key2] = arguments[_key2];
             }
 
-            var pipe = function pipe(acc, fn, i) {
+            var pipe = function pipe(acc, fn) {
                 return _isArray(acc) ? fn.apply(_this, acc) : fn.call(_this, acc);
             };
 
