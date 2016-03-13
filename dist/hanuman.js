@@ -2,8 +2,8 @@ var _this = this;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
-/*eslint-disable no-extra-semi */
-;(function () {
+/*eslint-disable no-extra-semi */;
+(function () {
     /*eslint-enable no-extra-semi */
 
     'use strict';
@@ -14,6 +14,16 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         return new Error('ø( ^_^ )ø Hanuman: ' + message);
     };
 
+    /** Check for null */
+    var _isNull = function _isNull(input) {
+        return input === null;
+    };
+
+    /** Check for string */
+    var _isString = function _isString(input) {
+        return typeof input === 'string';
+    };
+
     /** Check for array */
     var _isArray = function _isArray(input) {
         return Array.isArray(input);
@@ -21,7 +31,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
     /** Check for object */
     var _isObject = function _isObject(input) {
-        return (typeof input === 'undefined' ? 'undefined' : _typeof(input)) === 'object';
+        return (typeof input === 'undefined' ? 'undefined' : _typeof(input)) === 'object' && !_isNull(input);
     };
 
     /** Ensures that the input is of the correct type */
@@ -67,6 +77,23 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
                 return curry(fn, combinedArgs);
             }
         };
+    };
+
+    /**
+     * Applies a predicate function to a list of values and returns a new list of values which pass the test
+     * @param {function} fn - The predicate function which acts as the filter
+     * @param {array} list - The list to be iterated over
+     */
+    var filter = function filter(fn, list) {
+
+        _validateType('array', list);
+
+        var reducer = function reducer(acc, item) {
+            !!fn(item) && acc.push(item);
+            return acc;
+        };
+
+        return reduce(reducer, [], list);
     };
 
     /** forEach Array */
@@ -122,6 +149,23 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         return nested;
     };
 
+    /**
+     * Returns a boolean indicating whether or not the given input is empty
+     * @param {string | array | object} input
+     */
+    var isEmpty = function isEmpty(input) {
+
+        if ((_isString(input) || _isArray(input)) && input.length === 0) {
+            return true;
+        }
+
+        if (_isObject(input) && Object.keys(input).length === 0) {
+            return true;
+        }
+
+        return false;
+    };
+
     /** Map array */
     var _mapArray = function _mapArray(fn, array) {
 
@@ -153,48 +197,12 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         return _isArray(collection) ? _mapArray(fn, collection) : _mapObject(fn, collection);
     };
 
-    /**
-     * Applies a predicate function to a list of values and returns a new list of values which pass the test
-     * @param {function} fn - The predicate function which acts as the filter
-     * @param {array} list - The list to be iterated over
-     */
-    var filter = function filter(fn, list) {
-
-        _validateType('array', list);
-
-        var reducer = function reducer(acc, item) {
-            !!fn(item) && acc.push(item);
-            return acc;
-        };
-
-        return reduce(reducer, [], list);
-    };
-
-    /**
-     * Applies an iterator function to an accumulator and each value in a a list, returning a single value
-     * @param {function} fn - The iterator function which receives the memo and current item from the list
-     * @param {*} acc - The initial value passed to the iterator function
-     * @param {array} list - The list to be iterated over
-     */
-    var reduce = function reduce(fn, memo, list) {
-
-        _validateType('array', list);
-
-        var result = memo;
-
-        _forEachArray(function (value, i) {
-            result = fn(result, value, i);
-        }, list);
-
-        return result;
-    };
-
     /** Copies a property from a source object to an accumulator object.
-    * @param {object} obj - The source object
-    * @param {object} acc - The accumulator (destination) object
-    * @param {string} key - The key of the k/v pair to copy
-    * @param {boolean} all - Should undefined properties be copied
-    */
+     * @param {object} obj - The source object
+     * @param {object} acc - The accumulator (destination) object
+     * @param {string} key - The key of the k/v pair to copy
+     * @param {boolean} all - Should undefined properties be copied
+     */
     var _copyProperty = function _copyProperty(obj, acc, key, all) {
         if (all || obj.hasOwnProperty(key)) {
             acc[key] = obj[key];
@@ -260,16 +268,36 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         };
     };
 
+    /**
+     * Applies an iterator function to an accumulator and each value in a a list, returning a single value
+     * @param {function} fn - The iterator function which receives the memo and current item from the list
+     * @param {*} acc - The initial value passed to the iterator function
+     * @param {array} list - The list to be iterated over
+     */
+    var reduce = function reduce(fn, memo, list) {
+
+        _validateType('array', list);
+
+        var result = memo;
+
+        _forEachArray(function (value, i) {
+            result = fn(result, value, i);
+        }, list);
+
+        return result;
+    };
+
     var H = {
         curry: curry,
+        filter: curry(filter),
         forEach: curry(forEach),
         get: curry(get),
+        isEmpty: isEmpty,
         map: curry(map),
-        filter: curry(filter),
-        reduce: curry(reduce),
         pick: curry(pick),
         pickAll: curry(pickAll),
-        pipe: pipe
+        pipe: pipe,
+        reduce: curry(reduce)
     };
 
     if ((typeof exports === 'undefined' ? 'undefined' : _typeof(exports)) === 'object') {

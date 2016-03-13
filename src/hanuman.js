@@ -1,34 +1,40 @@
-/*eslint-disable no-extra-semi */
-;(() => {
-/*eslint-enable no-extra-semi */
+/*eslint-disable no-extra-semi */ ;
+(() => {
+    /*eslint-enable no-extra-semi */
 
     'use strict';
 
     /** Accepts a message, and returns a new error */
     let _error = message => new Error(`ø( ^_^ )ø Hanuman: ${message}`);
 
+    /** Check for null */
+    let _isNull = input => input === null;
+
+    /** Check for string */
+    let _isString = input => typeof input === 'string';
+
     /** Check for array */
     let _isArray = input => Array.isArray(input);
 
     /** Check for object */
-    let _isObject = input => typeof input === 'object';
+    let _isObject = input => typeof input === 'object' && !_isNull(input);
 
     /** Ensures that the input is of the correct type */
     let _validateType = (type, input) => {
 
         switch (type) {
             case 'array':
-                if ( !_isArray(input) ) {
+                if (!_isArray(input)) {
                     throw _error('Input must be an array');
                 }
                 break;
             case 'object':
-                if ( !_isObject(input) ) {
+                if (!_isObject(input)) {
                     throw _error('Input must be an object');
                 }
                 break;
             case 'array-object':
-                if ( !_isArray(input) && !_isObject(input) ) {
+                if (!_isArray(input) && !_isObject(input)) {
                     throw _error('Input must be an array or an object');
                 }
                 break;
@@ -58,6 +64,24 @@
             }
 
         };
+    };
+
+    /**
+     * Applies a predicate function to a list of values and returns a new list of values which pass the test
+     * @param {function} fn - The predicate function which acts as the filter
+     * @param {array} list - The list to be iterated over
+     */
+    let filter = (fn, list) => {
+
+        _validateType('array', list);
+
+        let reducer = (acc, item) => {
+            !!fn(item) && acc.push(item);
+            return acc;
+        };
+
+        return reduce(reducer, [], list);
+
     };
 
     /** forEach Array */
@@ -116,6 +140,24 @@
         return nested;
     };
 
+    /**
+     * Returns a boolean indicating whether or not the given input is empty
+     * @param {string | array | object} input
+     */
+    let isEmpty = input => {
+
+        if ((_isString(input) || _isArray(input)) && input.length === 0) {
+            return true;
+        }
+
+        if (_isObject(input) && Object.keys(input).length === 0) {
+            return true;
+        }
+
+        return false;
+
+    };
+
     /** Map array */
     let _mapArray = (fn, array) => {
 
@@ -149,51 +191,14 @@
         return _isArray(collection) ? _mapArray(fn, collection) : _mapObject(fn, collection);
     };
 
-    /**
-     * Applies a predicate function to a list of values and returns a new list of values which pass the test
-     * @param {function} fn - The predicate function which acts as the filter
-     * @param {array} list - The list to be iterated over
-     */
-    let filter = (fn, list) => {
-
-        _validateType('array', list);
-
-        let reducer = (acc, item) => {
-            !!fn(item) && acc.push(item);
-            return acc;
-        };
-
-        return reduce(reducer, [], list);
-
-    };
-
-    /**
-     * Applies an iterator function to an accumulator and each value in a a list, returning a single value
-     * @param {function} fn - The iterator function which receives the memo and current item from the list
-     * @param {*} acc - The initial value passed to the iterator function
-     * @param {array} list - The list to be iterated over
-     */
-    let reduce = (fn, memo, list) => {
-
-        _validateType('array', list);
-
-        let result = memo;
-
-        _forEachArray((value, i) => {
-            result = fn(result, value, i);
-        }, list);
-
-        return result;
-    };
-
     /** Copies a property from a source object to an accumulator object.
-    * @param {object} obj - The source object
-    * @param {object} acc - The accumulator (destination) object
-    * @param {string} key - The key of the k/v pair to copy
-    * @param {boolean} all - Should undefined properties be copied
-    */
+     * @param {object} obj - The source object
+     * @param {object} acc - The accumulator (destination) object
+     * @param {string} key - The key of the k/v pair to copy
+     * @param {boolean} all - Should undefined properties be copied
+     */
     let _copyProperty = (obj, acc, key, all) => {
-        if ( all || obj.hasOwnProperty(key) ) {
+        if (all || obj.hasOwnProperty(key)) {
             acc[key] = obj[key];
         }
         return acc;
@@ -250,17 +255,36 @@
 
     };
 
+    /**
+     * Applies an iterator function to an accumulator and each value in a a list, returning a single value
+     * @param {function} fn - The iterator function which receives the memo and current item from the list
+     * @param {*} acc - The initial value passed to the iterator function
+     * @param {array} list - The list to be iterated over
+     */
+    let reduce = (fn, memo, list) => {
+
+        _validateType('array', list);
+
+        let result = memo;
+
+        _forEachArray((value, i) => {
+            result = fn(result, value, i);
+        }, list);
+
+        return result;
+    };
 
     let H = {
         curry,
+        filter: curry(filter),
         forEach: curry(forEach),
         get: curry(get),
+        isEmpty: isEmpty,
         map: curry(map),
-        filter: curry(filter),
-        reduce: curry(reduce),
         pick: curry(pick),
         pickAll: curry(pickAll),
-        pipe: pipe
+        pipe: pipe,
+        reduce: curry(reduce)
     };
 
     if (typeof exports === 'object') {
