@@ -128,7 +128,7 @@
         _validateType('object', obj);
 
         let nested = obj;
-        let properties = typeof props === 'string' ? Array.from(props) : props;
+        let properties = typeof props === 'string' ? [props] : props;
 
         for (let i = 0; i < properties.length; i++) {
             nested = nested[properties[i]];

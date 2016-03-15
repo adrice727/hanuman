@@ -1,0 +1,29 @@
+{
+  "name": "hanuman-js",
+  "description": "A small, functional, JavaScript helper library",
+  "main": "dist/hanuman.min.js",
+  "authors": [
+    "adrice727@gmail.com"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "functional",
+    "util",
+    "utility",
+    "helper",
+    "monkey"
+  ],
+  "homepage": "https://github.com/adrice727/hanuman",
+  "moduleType": [
+    "amd",
+    "globals",
+    "node"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

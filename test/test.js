@@ -112,6 +112,10 @@ describe('Hanuman#get', () => {
         expect(H.get('a', {
             a: 44
         })).to.equal(44);
+
+        expect(H.get('name', {
+            name: 'Albert'
+        })).to.equal('Albert');
     });
 
     it('accepts a string and returns undefined if the property does not exist', () => {
