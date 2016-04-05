@@ -6,20 +6,25 @@
  - Inspired by [Ramda](http://ramdajs.com/)
  - 4kb minified
 
+*If there's something you'd like to see added to Hanuman, open an [issue](https://github.com/adrice727/hanuman/issues) on GitHub.*
 
 ###Installation:
+For use with Node:
+
 ```bash
 $ npm install hanuman-js
 ```
-
-For use with Node:
 
 ```javascript
 var H = require('hanuman-js');
 ```
 For use in the Browser:
+
+```bash
+$ bower install hanuman-js
+```
 ```html
-<script src="your/path/to/hanuman.min.js"></script>
+<script src="../bower_components/hanuman-js/dist/hanuman.min.js"></script>
 ```
 
 ###Methods:
