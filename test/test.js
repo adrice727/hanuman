@@ -367,6 +367,34 @@ describe('Hanuman#pipe', () => {
 
 });
 
+describe('Hanuman#range', () => {
+
+    it('creates list of sequential numbers', () => {
+        
+        let oneToTen = H.range(1,10);
+        
+        expect(oneToTen).to.have.lengthOf(10);
+        expect(H.get('0', oneToTen)).to.equal(1);
+        expect(H.get('9', oneToTen)).to.equal(10);
+        
+        let justTen = H.range(10,10);
+        expect(justTen).to.have.lengthOf(1);
+        expect(H.get('0', justTen)).to.equal(10);
+        expect(H.get('1', justTen)).to.be.undefined;
+    });
+    
+    it('can be curried', () => {
+        
+        let startAtOne = H.range(1);
+        let oneToTen = startAtOne(10);
+        
+        expect(oneToTen).to.have.lengthOf(10);
+        expect(H.get('0', oneToTen)).to.equal(1);
+        expect(H.get('9', oneToTen)).to.equal(10);
+    });
+
+});
+
 afterEach(function(done) {
     setTimeout(done, 25);
 });

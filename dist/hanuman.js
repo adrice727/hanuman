@@ -24,6 +24,11 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         return typeof input === 'string';
     };
 
+    /** Check for number */
+    var _isNumber = function _isNumber(input) {
+        return typeof input === 'number';
+    };
+
     /** Check for array */
     var _isArray = function _isArray(input) {
         return Array.isArray(input);
@@ -38,6 +43,11 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     var _validateType = function _validateType(type, input) {
 
         switch (type) {
+            case 'number':
+                if (!_isNumber(input)) {
+                    throw _error('Input must be a number');
+                }
+                break;
             case 'array':
                 if (!_isArray(input)) {
                     throw _error('Input must be an array');
@@ -58,7 +68,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
     /**
      * Returns a curried version of the supplied function
-     * @param {function} fn - The function to be curried
+     * @param {Function} fn - The function to be curried
      * @param {...*} [args] - A single argument or series of arguments
      * TODO Preserve length of original function
      */
@@ -81,8 +91,8 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
     /**
      * Applies a predicate function to a list of values and returns a new list of values which pass the test
-     * @param {function} fn - The predicate function which acts as the filter
-     * @param {array} list - The list to be iterated over
+     * @param {Function} fn - The predicate function which acts as the filter
+     * @param {Array} list - The list to be iterated over
      */
     var filter = function filter(fn, list) {
 
@@ -117,8 +127,8 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
      * Applies a function to each item in the collection.  If the collection is an array, the
      * iterator function will receive the value, index, and array.  If the collection is an object
      * the iterator function will receive the value, key, and object.
-     * @param {function} fn
-     * @param {array | object} [args] - A single argument or series of arguments
+     * @param {Function} fn
+     * @param {Array | Object} [args] - A single argument or series of arguments
      */
     var forEach = function forEach(fn, collection) {
 
@@ -129,8 +139,8 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
     /**
      * Returns the value from an object, or undefined if it doesn't exist
-     * @param {string | array} props - An array of properties or a single property
-     * @param {object | array} obj
+     * @param {String | Array} props - An array of properties or a single property
+     * @param {Object | Array} obj
      */
     var get = function get(props, obj) {
 
@@ -151,7 +161,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
     /**
      * Returns a boolean indicating whether or not the given input is empty
-     * @param {string | array | object} input
+     * @param {String | Array | object} input
      */
     var isEmpty = function isEmpty(input) {
 
@@ -187,8 +197,8 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     /**
      * Creates a new array, or a new object, by applying a function to each item item in
      * the list, or key/value pair
-     * @param {function} fn - The function to be called on each element
-     * @param {array | object} list - The list to be iterated over
+     * @param {Function} fn - The function to be called on each element
+     * @param {Array | Object} list - The list to be iterated over
      */
     var map = function map(fn, collection) {
 
@@ -198,10 +208,10 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     };
 
     /** Copies a property from a source object to an accumulator object.
-     * @param {object} obj - The source object
-     * @param {object} acc - The accumulator (destination) object
-     * @param {string} key - The key of the k/v pair to copy
-     * @param {boolean} all - Should undefined properties be copied
+     * @param {Object} obj - The source object
+     * @param {Object} acc - The accumulator (destination) object
+     * @param {String} key - The key of the k/v pair to copy
+     * @param {Boolean} all - Should undefined properties be copied
      */
     var _copyProperty = function _copyProperty(obj, acc, key, all) {
         if (all || obj.hasOwnProperty(key)) {
@@ -213,8 +223,8 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     /**
      * Returns a new object by copying properties from the supplied object.  Undefined
      * properties are not copied to the new object.
-     * @param {array} props - An array of properties
-     * @param {object} obj - The object from which the properties are copied
+     * @param {Array} props - An array of properties
+     * @param {Object} obj - The object from which the properties are copied
      */
     var pick = function pick(props, obj) {
 
@@ -230,8 +240,8 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     /**
      * Returns a new object by copying properties from the supplied object.  Undefined
      * properties are copied to the new object.
-     * @param {array} props - An array of properties
-     * @param {object} obj - The object from which the properties are copied
+     * @param {Array} props - An array of properties
+     * @param {Object} obj - The object from which the properties are copied
      */
     var pickAll = function pickAll(props, obj) {
 
@@ -248,7 +258,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
      * Returns a composed function by chaining the provided functions from left
      * to right.  The first function in the chain may accept any number of
      * arguments.  The remaining functions may only accept a single argument.
-     * @param {...function} fns
+     * @param {...Function} fns
      */
     var pipe = function pipe() {
         for (var _len = arguments.length, fns = Array(_len), _key = 0; _key < _len; _key++) {
@@ -269,10 +279,30 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     };
 
     /**
+     * Returns a list of sequential numbers
+     * @param {Number} start - The first number in the list
+     * @param {Number} end - The last number in the list
+     */
+    var range = function range(start, end) {
+
+        _validateType('number', parseInt(start)) && _validateType('number', parseInt(stop));
+
+        var list = [];
+        var current = parseInt(start);
+        var stop = parseInt(end) + 1;
+
+        while (current < stop) {
+            list.push(current++);
+        }
+
+        return list;
+    };
+
+    /**
      * Applies an iterator function to an accumulator and each value in a a list, returning a single value
-     * @param {function} fn - The iterator function which receives the memo and current item from the list
+     * @param {Function} fn - The iterator function which receives the memo and current item from the list
      * @param {*} acc - The initial value passed to the iterator function
-     * @param {array} list - The list to be iterated over
+     * @param {Array} list - The list to be iterated over
      */
     var reduce = function reduce(fn, memo, list) {
 
@@ -297,6 +327,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         pick: curry(pick),
         pickAll: curry(pickAll),
         pipe: pipe,
+        range: curry(range),
         reduce: curry(reduce)
     };
 

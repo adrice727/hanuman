@@ -13,6 +13,9 @@
     /** Check for string */
     let _isString = input => typeof input === 'string';
 
+    /** Check for number */
+    let _isNumber = input => typeof input === 'number';
+
     /** Check for array */
     let _isArray = input => Array.isArray(input);
 
@@ -23,6 +26,11 @@
     let _validateType = (type, input) => {
 
         switch (type) {
+            case 'number':
+                if (!_isNumber(input)) {
+                    throw _error('Input must be a number');
+                }
+                break;
             case 'array':
                 if (!_isArray(input)) {
                     throw _error('Input must be an array');
@@ -44,7 +52,7 @@
 
     /**
      * Returns a curried version of the supplied function
-     * @param {function} fn - The function to be curried
+     * @param {Function} fn - The function to be curried
      * @param {...*} [args] - A single argument or series of arguments
      * TODO Preserve length of original function
      */
@@ -68,8 +76,8 @@
 
     /**
      * Applies a predicate function to a list of values and returns a new list of values which pass the test
-     * @param {function} fn - The predicate function which acts as the filter
-     * @param {array} list - The list to be iterated over
+     * @param {Function} fn - The predicate function which acts as the filter
+     * @param {Array} list - The list to be iterated over
      */
     let filter = (fn, list) => {
 
@@ -107,8 +115,8 @@
      * Applies a function to each item in the collection.  If the collection is an array, the
      * iterator function will receive the value, index, and array.  If the collection is an object
      * the iterator function will receive the value, key, and object.
-     * @param {function} fn
-     * @param {array | object} [args] - A single argument or series of arguments
+     * @param {Function} fn
+     * @param {Array | Object} [args] - A single argument or series of arguments
      */
     let forEach = (fn, collection) => {
 
@@ -120,8 +128,8 @@
 
     /**
      * Returns the value from an object, or undefined if it doesn't exist
-     * @param {string | array} props - An array of properties or a single property
-     * @param {object | array} obj
+     * @param {String | Array} props - An array of properties or a single property
+     * @param {Object | Array} obj
      */
     let get = (props, obj) => {
 
@@ -142,7 +150,7 @@
 
     /**
      * Returns a boolean indicating whether or not the given input is empty
-     * @param {string | array | object} input
+     * @param {String | Array | object} input
      */
     let isEmpty = input => {
 
@@ -181,8 +189,8 @@
     /**
      * Creates a new array, or a new object, by applying a function to each item item in
      * the list, or key/value pair
-     * @param {function} fn - The function to be called on each element
-     * @param {array | object} list - The list to be iterated over
+     * @param {Function} fn - The function to be called on each element
+     * @param {Array | Object} list - The list to be iterated over
      */
     let map = (fn, collection) => {
 
@@ -192,10 +200,10 @@
     };
 
     /** Copies a property from a source object to an accumulator object.
-     * @param {object} obj - The source object
-     * @param {object} acc - The accumulator (destination) object
-     * @param {string} key - The key of the k/v pair to copy
-     * @param {boolean} all - Should undefined properties be copied
+     * @param {Object} obj - The source object
+     * @param {Object} acc - The accumulator (destination) object
+     * @param {String} key - The key of the k/v pair to copy
+     * @param {Boolean} all - Should undefined properties be copied
      */
     let _copyProperty = (obj, acc, key, all) => {
         if (all || obj.hasOwnProperty(key)) {
@@ -207,8 +215,8 @@
     /**
      * Returns a new object by copying properties from the supplied object.  Undefined
      * properties are not copied to the new object.
-     * @param {array} props - An array of properties
-     * @param {object} obj - The object from which the properties are copied
+     * @param {Array} props - An array of properties
+     * @param {Object} obj - The object from which the properties are copied
      */
     let pick = (props, obj) => {
 
@@ -222,8 +230,8 @@
     /**
      * Returns a new object by copying properties from the supplied object.  Undefined
      * properties are copied to the new object.
-     * @param {array} props - An array of properties
-     * @param {object} obj - The object from which the properties are copied
+     * @param {Array} props - An array of properties
+     * @param {Object} obj - The object from which the properties are copied
      */
     let pickAll = (props, obj) => {
 
@@ -239,7 +247,7 @@
      * Returns a composed function by chaining the provided functions from left
      * to right.  The first function in the chain may accept any number of
      * arguments.  The remaining functions may only accept a single argument.
-     * @param {...function} fns
+     * @param {...Function} fns
      */
     let pipe = (...fns) => {
 
@@ -256,10 +264,31 @@
     };
 
     /**
+     * Returns a list of sequential numbers
+     * @param {Number} start - The first number in the list
+     * @param {Number} end - The last number in the list
+     */
+    let range = (start, end) => {
+
+        _validateType('number', parseInt(start)) && _validateType('number', parseInt(stop));
+        
+        let list = [];
+        let current = parseInt(start);
+        let stop = parseInt(end) + 1;
+        
+        while (current < stop ) {
+            list.push(current++);
+        }
+
+        return list;
+    
+    };
+
+    /**
      * Applies an iterator function to an accumulator and each value in a a list, returning a single value
-     * @param {function} fn - The iterator function which receives the memo and current item from the list
+     * @param {Function} fn - The iterator function which receives the memo and current item from the list
      * @param {*} acc - The initial value passed to the iterator function
-     * @param {array} list - The list to be iterated over
+     * @param {Array} list - The list to be iterated over
      */
     let reduce = (fn, memo, list) => {
 
@@ -284,6 +313,7 @@
         pick: curry(pick),
         pickAll: curry(pickAll),
         pipe: pipe,
+        range: curry(range),
         reduce: curry(reduce)
     };
 
