@@ -19,6 +19,16 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         return input === null;
     };
 
+    /** Check for boolean */
+    var _isBoolean = function _isBoolean(input) {
+        return typeof input === 'boolean';
+    };
+
+    /** Check for boolean */
+    var _isFunction = function _isFunction(input) {
+        return typeof input === 'function';
+    };
+
     /** Check for string */
     var _isString = function _isString(input) {
         return typeof input === 'string';
@@ -63,6 +73,46 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
                     throw _error('Input must be an array or an object');
                 }
                 break;
+        }
+    };
+
+    /**
+     * Returns a deep copy of the supplied input for all types except functions, for which
+     * a reference is returned.
+     * @param {*} input
+     */
+    var clone = function clone(input) {
+
+        if (_isString(input)) {
+            return input.slice();
+        }
+
+        if (_isBoolean(input)) {
+            return !!input;
+        }
+
+        if (_isFunction(input) || _isNumber(input)) {
+            return input;
+        }
+
+        if (_isArray(input)) {
+
+            var arrayClone = function arrayClone(acc, input) {
+                acc.push(clone(input));
+                return acc;
+            };
+
+            return reduce(arrayClone, [], input);
+        }
+
+        if (_isObject(input)) {
+
+            var objClone = function objClone(acc, key) {
+                acc[key] = clone(input[key]);
+                return acc;
+            };
+
+            return Object.keys(input).reduce(objClone, {}, Object.keys(input));
         }
     };
 
@@ -317,7 +367,28 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         return result;
     };
 
+    /**
+     * Applies an iterator function to an accumulator and each value in a a list, returning a list
+     * of successively reduced values 
+     * @param {Function} fn - The iterator function which receives the memo and current item from the list
+     * @param {*} acc - The initial value passed to the iterator function
+     * @param {Array} list - The list to be iterated over
+     */
+    var scan = function scan(fn, memo, list) {
+
+        _validateType('array', list);
+
+        var result = [memo];
+
+        _forEachArray(function (value, i) {
+            result.push(fn(result[i], value));
+        }, list);
+
+        return result;
+    };
+
     var H = {
+        clone: clone,
         curry: curry,
         filter: curry(filter),
         forEach: curry(forEach),
@@ -328,7 +399,8 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         pickAll: curry(pickAll),
         pipe: pipe,
         range: curry(range),
-        reduce: curry(reduce)
+        reduce: curry(reduce),
+        scan: curry(scan)
     };
 
     if ((typeof exports === 'undefined' ? 'undefined' : _typeof(exports)) === 'object') {

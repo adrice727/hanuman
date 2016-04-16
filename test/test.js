@@ -54,6 +54,56 @@ before(function() {
 
 });
 
+describe('Hanuman#clone', () => {
+
+    it('works for primitive types', () => {
+        expect(H.clone(undefined)).to.be.undefined;
+        expect(H.clone(null)).to.be.null;
+        expect(H.clone(true)).to.equal(true);
+        expect(H.clone(false)).to.equal(false);
+        expect(H.clone('input')).to.equal('input');
+        expect(H.clone(1)).to.equal(1);
+    });
+
+    it('returns a reference for functions', () => {
+        expect(H.clone(addTwo)).to.strictEqual(addTwo);
+    });
+    
+    it('works for simple arrays', () => {
+        expect(H.clone(numbers)).to.notEqual(numbers);
+        expect(H.get('0', H.clone(numbers))).to.equal(H.get('0', numbers));
+        
+        expect(H.clone(fruit)).to.notEqual(fruit);
+        expect(H.clone(fruit[0])).to.equal(fruit[0]);
+    });
+    
+    let getA = H.get('a');
+    
+    it('works for simple objects', () => {
+        let emptyObj = {};
+        expect(H.clone(emptyObj)).to.notEqual(emptyObj);
+        
+        let singleKey = { a: 44 };
+        let singleKeyClone = H.clone(singleKey);
+        
+        expect(singleKeyClone).to.notEqual(singleKey);
+        expect(getA(singleKeyClone)).to.strictEqual(getA(singleKey));
+    });
+    
+    it('works for nested objects', () => {
+        let nested = { a: { b: { c: 44, d: { e: [1,2,3] } } } };
+        let nestedClone = H.clone(nested);
+       
+        expect(nestedClone).to.notEqual(nested);
+        expect(getA(nested)).to.notEqual(getA(nested));
+        expect(H.get(['a', 'b', 'c'], nested)).to.equal(H.get(['a', 'b', 'c'], nestedClone));
+        expect(H.get(['a', 'b', 'd'], nested)).to.notEqual(H.get(['a', 'b', 'd'], nestedClone));
+        expect(H.get(['a', 'b', 'd', 'e'], nested)).to.notEqual(H.get(['a', 'b', 'd', 'e'], nestedClone));
+        expect(H.get(['a', 'b', 'd', 'e', '0'], nested)).to.equal(H.get(['a', 'b', 'd', 'e', '0'], nestedClone));
+       
+    });
+});
+
 describe('Hanuman#curry', function() {
 
     it('curries a single argument', () => {
@@ -231,55 +281,6 @@ describe('Hanuman#filter', () => {
 
 });
 
-describe('Hanuman#reduce', () => {
-
-    it('folds a function over an array with the provided accumulator', () => {
-        expect(H.reduce(addTwo, 0, numbers)).to.equal(21);
-    });
-
-    it('passes the indices to the reducer function', () => {
-
-        let convertToObj = (acc, v, i) => {
-            acc[i] = v;
-            return acc;
-        };
-
-        let output = H.reduce(convertToObj, {}, numbers);
-        expect(output).to.include.keys('0', '1', '2', '3', '4', '5');
-        expect(output[0]).to.equal(1);
-        expect(output[4]).to.equal(5);
-    });
-
-    it('returns an object when provided with an object as an accumulator', () => {
-
-        let buildEvenSquaresHash = (acc, v) => {
-            if (isEven(v)) {
-                acc[v] = v * v;
-            }
-            return acc;
-        };
-
-        let evenSquares = H.reduce(buildEvenSquaresHash, {}, numbers);
-        expect(evenSquares).to.include.keys('2', '4', '6');
-        expect(evenSquares).to.not.include.keys('1', '3', '5');
-    });
-
-    it('returns a list when provided with an array as an accumulator', () => {
-
-        let buildEvenSquaresArray = (acc, v) => {
-            if (isEven(v)) {
-                acc.push(v);
-            }
-            return acc;
-        };
-
-        let evenSquares = H.reduce(buildEvenSquaresArray, [], numbers);
-        expect(evenSquares).to.contain(4, 16, 36);
-        expect(evenSquares).to.not.contain(1, 9, 25);
-    });
-
-});
-
 describe('Hanuman#pick', () => {
 
     it('creates a new object from list of supplied properties', () => {
@@ -391,6 +392,76 @@ describe('Hanuman#range', () => {
         expect(oneToTen).to.have.lengthOf(10);
         expect(H.get('0', oneToTen)).to.equal(1);
         expect(H.get('9', oneToTen)).to.equal(10);
+    });
+
+});
+
+describe('Hanuman#reduce', () => {
+
+    it('folds a function over an array with the provided accumulator', () => {
+        expect(H.reduce(addTwo, 0, numbers)).to.equal(21);
+    });
+
+    it('passes the indices to the reducer function', () => {
+
+        let convertToObj = (acc, v, i) => {
+            acc[i] = v;
+            return acc;
+        };
+
+        let output = H.reduce(convertToObj, {}, numbers);
+        expect(output).to.include.keys('0', '1', '2', '3', '4', '5');
+        expect(output[0]).to.equal(1);
+        expect(output[4]).to.equal(5);
+    });
+
+    it('returns an object when provided with an object as an accumulator', () => {
+
+        let buildEvenSquaresHash = (acc, v) => {
+            if (isEven(v)) {
+                acc[v] = v * v;
+            }
+            return acc;
+        };
+
+        let evenSquares = H.reduce(buildEvenSquaresHash, {}, numbers);
+        expect(evenSquares).to.include.keys('2', '4', '6');
+        expect(evenSquares).to.not.include.keys('1', '3', '5');
+    });
+
+    it('returns a list when provided with an array as an accumulator', () => {
+
+        let buildEvenSquaresArray = (acc, v) => {
+            if (isEven(v)) {
+                acc.push(v);
+            }
+            return acc;
+        };
+
+        let evenSquares = H.reduce(buildEvenSquaresArray, [], numbers);
+        expect(evenSquares).to.contain(4, 16, 36);
+        expect(evenSquares).to.not.contain(1, 9, 25);
+    });
+
+});
+
+describe('Hanuman#scan', () => {
+
+    it('folds a function over an array with the provided accumulator and successively pushes the accumulator to an output array', () => {
+        let listOfSums = H.scan(addTwo, 0, numbers);
+        expect(listOfSums).to.have.lengthOf(7);
+        expect(H.get('0', listOfSums)).to.equal(0);
+        expect(H.get('6', listOfSums)).to.equal(21);
+    });
+
+    it('passes the indices to the reducer function', () => {
+
+        let convertToObj = (acc, v, i) => {
+            acc[i] = v;
+            return acc;
+        };
+
+        let output = H.scan(convertToObj, {}, numbers);
     });
 
 });

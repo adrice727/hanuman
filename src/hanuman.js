@@ -9,6 +9,12 @@
 
     /** Check for null */
     let _isNull = input => input === null;
+    
+    /** Check for boolean */
+    let _isBoolean = input => typeof input === 'boolean';
+    
+    /** Check for boolean */
+    let _isFunction= input => typeof input === 'function';
 
     /** Check for string */
     let _isString = input => typeof input === 'string';
@@ -48,6 +54,45 @@
                 break;
         }
 
+    };
+    
+    /**
+     * Returns a deep copy of the supplied input
+     * @param {*} input - A single argument or series of arguments
+     */
+    let clone = input => {
+        
+        if ( _isString(input) ) {
+            return input.slice();
+        }
+        
+        if (_isBoolean(input)) {
+            return !!input;
+        }
+        
+        if ( _isFunction(input) || _isNumber(input) ) {
+            return input; 
+        }
+        
+        if ( _isArray(input) ) {
+            
+            let arrayClone = (acc, input) => {
+                acc.push(clone(input));
+                return acc;
+            };
+            
+            return reduce(arrayClone, [], input);
+        }
+        
+        if ( _isObject(input) ) {
+            
+            let objClone = (acc, key) => {
+                acc[key] = clone(input[key]);
+                return acc;
+            };
+            
+            return Object.keys(input).reduce(objClone, {}, Object.keys(input));
+        }
     };
 
     /**
@@ -302,8 +347,29 @@
 
         return result;
     };
+    
+    /**
+     * Applies an iterator function to an accumulator and each value in a a list, returning a list
+     * of successively reduced values 
+     * @param {Function} fn - The iterator function which receives the memo and current item from the list
+     * @param {*} acc - The initial value passed to the iterator function
+     * @param {Array} list - The list to be iterated over
+     */
+    let scan = (fn, memo, list) => {
+
+        _validateType('array', list);
+
+        let result = [memo];
+
+        _forEachArray((value, i) => {
+            result.push(fn(result[i], value));
+        }, list);
+
+        return result;
+    };
 
     let H = {
+        clone,
         curry,
         filter: curry(filter),
         forEach: curry(forEach),
@@ -312,9 +378,10 @@
         map: curry(map),
         pick: curry(pick),
         pickAll: curry(pickAll),
-        pipe: pipe,
+        pipe,
         range: curry(range),
-        reduce: curry(reduce)
+        reduce: curry(reduce),
+        scan: curry(scan)
     };
 
     if (typeof exports === 'object') {
