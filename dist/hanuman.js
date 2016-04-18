@@ -77,9 +77,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     };
 
     /**
-     * Returns a deep copy of the supplied input for all types except functions, for which
-     * a reference is returned.
-     * @param {*} input
+     * Returns a deep copy of the supplied input for all types except functions,
+     * for which a reference is returned.
+     * @param {*} input - A single argument or series of arguments
      */
     var clone = function clone(input) {
 
@@ -91,28 +91,28 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
             return !!input;
         }
 
-        if (_isFunction(input) || _isNumber(input)) {
+        if (_isFunction(input) || _isNumber(input) || _isNull(input)) {
             return input;
         }
 
         if (_isArray(input)) {
 
-            var arrayClone = function arrayClone(acc, input) {
+            var cloneArray = function cloneArray(acc, input) {
                 acc.push(clone(input));
                 return acc;
             };
 
-            return reduce(arrayClone, [], input);
+            return reduce(cloneArray, [], input);
         }
 
         if (_isObject(input)) {
 
-            var objClone = function objClone(acc, key) {
+            var cloneObj = function cloneObj(acc, key) {
                 acc[key] = clone(input[key]);
                 return acc;
             };
 
-            return Object.keys(input).reduce(objClone, {}, Object.keys(input));
+            return Object.keys(input).reduce(cloneObj, {}, Object.keys(input));
         }
     };
 
@@ -257,7 +257,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         return _isArray(collection) ? _mapArray(fn, collection) : _mapObject(fn, collection);
     };
 
-    /** Copies a property from a source object to an accumulator object.
+    /** Creates a clone from a source object property and assigns it to an accumulator object.
      * @param {Object} obj - The source object
      * @param {Object} acc - The accumulator (destination) object
      * @param {String} key - The key of the k/v pair to copy
@@ -265,7 +265,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
      */
     var _copyProperty = function _copyProperty(obj, acc, key, all) {
         if (all || obj.hasOwnProperty(key)) {
-            acc[key] = obj[key];
+            acc[key] = clone(obj[key]);
         }
         return acc;
     };
@@ -381,7 +381,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         var result = [memo];
 
         _forEachArray(function (value, i) {
-            result.push(fn(result[i], value));
+            result.push(fn(result[i], value, i));
         }, list);
 
         return result;
