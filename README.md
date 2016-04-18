@@ -29,6 +29,36 @@ $ bower install hanuman-js
 ```
 
 ###Methods:
+
+### `clone`
+
+*Creates a deep copy of the supplied input for all types except functions,
+for which a reference is returned.*
+######`*`  **&rarr;**  `*`
+```javascript
+
+let numbers = [1, 2, 3, 4, 5];
+let numbersCopy = H.clone(numbers); // [1, 2, 3, 4, 5];
+numbers === numbersCopy; // returns false
+
+let user = {id: '28jd2', name: {first: 'Albert' , last: 'King' }, age: 55};
+let userCopy = H.clone(user);
+user === userCopy; // returns false
+user.id === userCopy.id // returns true
+user.name === userCopy.name // returns false
+user.age === userCopy.age // returns true
+
+let add = (a,b,c) => a + b + c;
+H.clone(add) === add; \\ returns true
+
+
+H.clone(44); // returns 44
+H.clone('copy'); // returns 'copy'
+H.clone(true); // returns true
+H.clone(null); // returns null
+H.clone(undefined); // returns undefined
+```
+
 ### `curry`
 
 *Returns a curried version of the supplied function*
@@ -171,7 +201,7 @@ startAtTwelve(17); // returns [12, 13, 14, 15, 16, 17];
 
 ### `reduce`
 *Applies an iterator function to an accumulator and the current value of the list, successively returning a single value*
-######`function`  **&rarr;**  `*`    **&rarr;**  `*`
+######`function`  **&rarr;**  `*`    **&rarr;**  `array`  **&rarr;**  `*`
 ```javascript
 let add = (a, b) => a + b;
 let numbers = [1, 2, 3, 4, 5];
@@ -188,4 +218,17 @@ let evenSquares = (acc, v) => {
 }
 
 H.reduce(evenSquares, {}, numbers); // returns { 2:4, 4:16 }
+```
+
+### `scan`
+*Applies an iterator function to an accumulator and each value in a a list, returning a list of successively reduced values*
+######`function`  **&rarr;**  `*`    **&rarr;**  `array`  **&rarr;**  `array`
+```javascript
+let add = (a, b) => a + b;
+let numbers = [1, 2, 3, 4, 5];
+
+H.scan(add, 0, []); // returns [0]
+H.scan(add, 0, numbers); // returns [0, 1, 3, 6, 10, 15]
+H.scan(add, '', ['a', 'b', 'c']); // returns ['', 'a', 'ab', 'abc']
+
 ```
