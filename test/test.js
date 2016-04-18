@@ -8,7 +8,7 @@ let H = require('../dist/hanuman');
 let numbers, odds, evens, fruit, users;
 
 // Functions
-let addTwo, addThree, isEven, double, subtractTen;
+let addTwo, addThree, isEven, double, multiply, subtractTen;
 
 /*eslint-disable no-undef */
 before(function() {
@@ -49,6 +49,8 @@ before(function() {
     isEven = v => v % 2 === 0;
 
     double = x => x * 2;
+    
+    multiply = (x, y) => x * y;
 
     subtractTen = x => x - 10;
 
@@ -66,14 +68,14 @@ describe('Hanuman#clone', () => {
     });
 
     it('returns a reference for functions', () => {
-        expect(H.clone(addTwo)).to.strictEqual(addTwo);
+        expect(H.clone(addTwo)).to.equal(addTwo);
     });
     
     it('works for simple arrays', () => {
-        expect(H.clone(numbers)).to.notEqual(numbers);
+        expect(H.clone(numbers)).to.not.equal(numbers);
         expect(H.get('0', H.clone(numbers))).to.equal(H.get('0', numbers));
         
-        expect(H.clone(fruit)).to.notEqual(fruit);
+        expect(H.clone(fruit)).to.not.equal(fruit);
         expect(H.clone(fruit[0])).to.equal(fruit[0]);
     });
     
@@ -81,26 +83,25 @@ describe('Hanuman#clone', () => {
     
     it('works for simple objects', () => {
         let emptyObj = {};
-        expect(H.clone(emptyObj)).to.notEqual(emptyObj);
+        expect(H.clone(emptyObj)).to.not.equal(emptyObj);
         
         let singleKey = { a: 44 };
         let singleKeyClone = H.clone(singleKey);
         
-        expect(singleKeyClone).to.notEqual(singleKey);
-        expect(getA(singleKeyClone)).to.strictEqual(getA(singleKey));
+        expect(singleKeyClone).to.not.equal(singleKey);
+        expect(getA(singleKeyClone)).to.equal(getA(singleKey));
     });
     
     it('works for nested objects', () => {
         let nested = { a: { b: { c: 44, d: { e: [1,2,3] } } } };
         let nestedClone = H.clone(nested);
        
-        expect(nestedClone).to.notEqual(nested);
-        expect(getA(nested)).to.notEqual(getA(nested));
+        expect(nestedClone).to.not.equal(nested);
+        expect(getA(nestedClone)).to.not.equal(getA(nested));
         expect(H.get(['a', 'b', 'c'], nested)).to.equal(H.get(['a', 'b', 'c'], nestedClone));
-        expect(H.get(['a', 'b', 'd'], nested)).to.notEqual(H.get(['a', 'b', 'd'], nestedClone));
-        expect(H.get(['a', 'b', 'd', 'e'], nested)).to.notEqual(H.get(['a', 'b', 'd', 'e'], nestedClone));
+        expect(H.get(['a', 'b', 'd'], nested)).to.not.equal(H.get(['a', 'b', 'd'], nestedClone));
+        expect(H.get(['a', 'b', 'd', 'e'], nested)).to.not.equal(H.get(['a', 'b', 'd', 'e'], nestedClone));
         expect(H.get(['a', 'b', 'd', 'e', '0'], nested)).to.equal(H.get(['a', 'b', 'd', 'e', '0'], nestedClone));
-       
     });
 });
 
@@ -122,7 +123,7 @@ describe('Hanuman#curry', function() {
             c: 22
         };
         let fn = H.curry(function(a, b) {
-            return a + b + this.c
+            return a + b + this.c;
         });
         expect(fn.call(context, 1, 2)).to.equal(25);
     });
@@ -447,21 +448,27 @@ describe('Hanuman#reduce', () => {
 
 describe('Hanuman#scan', () => {
 
-    it('folds a function over an array with the provided accumulator and successively pushes the accumulator to an output array', () => {
+    it('scans functions over an array with the provided accumulator', () => {
         let listOfSums = H.scan(addTwo, 0, numbers);
         expect(listOfSums).to.have.lengthOf(7);
         expect(H.get('0', listOfSums)).to.equal(0);
         expect(H.get('6', listOfSums)).to.equal(21);
     });
-
-    it('passes the indices to the reducer function', () => {
-
-        let convertToObj = (acc, v, i) => {
-            acc[i] = v;
-            return acc;
-        };
-
-        let output = H.scan(convertToObj, {}, numbers);
+    
+    it('returns an array with a single item if provided an empty list', () => {
+        let listOfSums = H.scan(addTwo, 0, []);
+        expect(listOfSums).to.have.lengthOf(1);
+        expect(H.get('0', listOfSums)).to.equal(0);
+    });
+    
+    it('can be curried', () => {
+    
+        let multipleScan = H.scan(multiply);
+        let multipleSequence = multipleScan(1, numbers);
+        
+        expect(multipleSequence).to.have.lengthOf(7);
+        expect(H.get('0', multipleSequence)).to.equal(1);
+        expect(H.get('6', multipleSequence)).to.equal(720);
     });
 
 });
