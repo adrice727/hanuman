@@ -57,7 +57,8 @@
     };
     
     /**
-     * Returns a deep copy of the supplied input
+     * Returns a deep copy of the supplied input for all types except functions,
+     * for which a reference is returned.
      * @param {*} input - A single argument or series of arguments
      */
     let clone = input => {
@@ -76,22 +77,22 @@
         
         if ( _isArray(input) ) {
             
-            let arrayClone = (acc, input) => {
+            let cloneArray = (acc, input) => {
                 acc.push(clone(input));
                 return acc;
             };
             
-            return reduce(arrayClone, [], input);
+            return reduce(cloneArray, [], input);
         }
         
         if ( _isObject(input) ) {
             
-            let objClone = (acc, key) => {
+            let cloneObj = (acc, key) => {
                 acc[key] = clone(input[key]);
                 return acc;
             };
             
-            return Object.keys(input).reduce(objClone, {}, Object.keys(input));
+            return Object.keys(input).reduce(cloneObj, {}, Object.keys(input));
         }
     };
 
@@ -244,7 +245,7 @@
         return _isArray(collection) ? _mapArray(fn, collection) : _mapObject(fn, collection);
     };
 
-    /** Copies a property from a source object to an accumulator object.
+    /** Creates a clone from a source object property and assigns it to an accumulator object.
      * @param {Object} obj - The source object
      * @param {Object} acc - The accumulator (destination) object
      * @param {String} key - The key of the k/v pair to copy
@@ -252,7 +253,7 @@
      */
     let _copyProperty = (obj, acc, key, all) => {
         if (all || obj.hasOwnProperty(key)) {
-            acc[key] = obj[key];
+            acc[key] = clone(obj[key]);
         }
         return acc;
     };
