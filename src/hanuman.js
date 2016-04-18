@@ -71,7 +71,7 @@
             return !!input;
         }
         
-        if ( _isFunction(input) || _isNumber(input) ) {
+        if ( _isFunction(input) || _isNumber(input) || _isNull(input) ) {
             return input; 
         }
         
@@ -363,7 +363,7 @@
         let result = [memo];
 
         _forEachArray((value, i) => {
-            result.push(fn(result[i], value));
+            result.push(fn(result[i], value, i));
         }, list);
 
         return result;
