@@ -100,7 +100,7 @@ H.forEach(logObject, user) // logs 'id: 28jd2', 'name: [object Object]', 'age: 5
 
 ```
 ### `get`
-*Returns a property from an object, or undefined if it doesn't exist.  An array of keys can be passed as the first object to retrieve a nested property.*
+*Returns a property from an object, or undefined if it doesn't exist.  An array of keys can be passed as the first argument to retrieve a nested property.*
 ######`string | array`  **&rarr;**  `object`    **&rarr;**  `* | undefined`
 ```javascript
 let user = {id: '28jd2', name: {first: 'Albert' , last: 'King' }, age: 55};
