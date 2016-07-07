@@ -11,7 +11,7 @@ let numbers, odds, evens, fruit, users;
 let addTwo, addThree, isEven, double, multiply, subtractTen;
 
 /*eslint-disable no-undef */
-before(function() {
+before(function () {
 
     numbers = [1, 2, 3, 4, 5, 6];
     evens = [2, 4, 6, 8, 10, 12];
@@ -49,7 +49,7 @@ before(function() {
     isEven = v => v % 2 === 0;
 
     double = x => x * 2;
-    
+
     multiply = (x, y) => x * y;
 
     subtractTen = x => x - 10;
@@ -70,32 +70,32 @@ describe('Hanuman#clone', () => {
     it('returns a reference for functions', () => {
         expect(H.clone(addTwo)).to.equal(addTwo);
     });
-    
+
     it('works for simple arrays', () => {
         expect(H.clone(numbers)).to.not.equal(numbers);
         expect(H.get('0', H.clone(numbers))).to.equal(H.get('0', numbers));
-        
+
         expect(H.clone(fruit)).to.not.equal(fruit);
         expect(H.clone(fruit[0])).to.equal(fruit[0]);
     });
-    
+
     let getA = H.get('a');
-    
+
     it('works for simple objects', () => {
         let emptyObj = {};
         expect(H.clone(emptyObj)).to.not.equal(emptyObj);
-        
+
         let singleKey = { a: 44 };
         let singleKeyClone = H.clone(singleKey);
-        
+
         expect(singleKeyClone).to.not.equal(singleKey);
         expect(getA(singleKeyClone)).to.equal(getA(singleKey));
     });
-    
+
     it('works for nested objects', () => {
-        let nested = { a: { b: { c: 44, d: { e: [1,2,3] } } } };
+        let nested = { a: { b: { c: 44, d: { e: [1, 2, 3] } } } };
         let nestedClone = H.clone(nested);
-       
+
         expect(nestedClone).to.not.equal(nested);
         expect(getA(nestedClone)).to.not.equal(getA(nested));
         expect(H.get(['a', 'b', 'c'], nested)).to.equal(H.get(['a', 'b', 'c'], nestedClone));
@@ -105,7 +105,7 @@ describe('Hanuman#clone', () => {
     });
 });
 
-describe('Hanuman#curry', function() {
+describe('Hanuman#curry', function () {
 
     it('curries a single argument', () => {
         let fn = H.curry(addThree)(10);
@@ -122,7 +122,7 @@ describe('Hanuman#curry', function() {
         let context = {
             c: 22
         };
-        let fn = H.curry(function(a, b) {
+        let fn = H.curry(function (a, b) {
             return a + b + this.c;
         });
         expect(fn.call(context, 1, 2)).to.equal(25);
@@ -153,6 +153,43 @@ describe('Hanuman#forEach', () => {
         H.forEach(fn, users[0]);
         expect(obj.name.first).to.equal('Albert');
         expect(obj.name.last).to.equal('King');
+    });
+});
+
+describe('Hanuman#forEachBreak', () => {
+
+    it('returns early when the predicate function returns true', () => {
+        let list = [];
+        let fn = (v, i) => list.push({ i, v });
+        H.forEachBreak(fn, v => v === 'cherry', fruit);
+        expect(list).to.have.lengthOf(2);
+    });
+
+    it('does not return early when the predicate function does not return true', () => {
+        let list = [];
+        let fn = (v, i) => list.push({ i, v });
+        H.forEachBreak(fn, v => v === 'pineapple', fruit);
+        expect(list[3].i).to.equal(3);
+        expect(list[4].v).to.equal('elderberry');
+    });
+
+    it('works for conditions outside of local scope', () => {
+        let list = [];
+        let count = 0;
+        let fn = (v, i) => {
+            list.push({ i, v });
+            count++;
+        };
+        H.forEachBreak(fn, () => count === 2, fruit);
+        expect(list).to.have.lengthOf(2);
+    });
+
+    it('works for objects', () => {
+        let obj = {};
+        let fn = (v, k) => obj[k] = v;
+        H.forEachBreak(fn, (v, k) => k === 'name', users[0]);
+        expect(obj.id).to.equal('1ad3x');
+        expect(obj.name).to.be.undefined;
     });
 });
 
@@ -211,17 +248,17 @@ describe('Hanuman#isEmpty', () => {
         expect(H.isEmpty('')).to.be.true;
         expect(H.isEmpty('empty')).to.be.false;
     });
-    
+
     it('works with arrays', () => {
         expect(H.isEmpty([])).to.be.true;
-        expect(H.isEmpty([1,2,3])).to.be.false;
+        expect(H.isEmpty([1, 2, 3])).to.be.false;
     });
-    
+
     it('works with objects', () => {
         expect(H.isEmpty({})).to.be.true;
-        expect(H.isEmpty({a: 'empty'})).to.be.false;
+        expect(H.isEmpty({ a: 'empty' })).to.be.false;
     });
-    
+
     it('returns false for all other types', () => {
         expect(H.isEmpty(0)).to.be.false;
         expect(H.isEmpty(44)).to.be.false;
@@ -271,7 +308,7 @@ describe('Hanuman#filter', () => {
 
     it('returns a new list containing values that satisfy the provided predicate', () => {
         let output = H.filter(isEven, numbers);
-        expect(output).to.have.lengthOf(3)
+        expect(output).to.have.lengthOf(3);
         expect(output[2]).to.equal(6);
     });
 
@@ -372,24 +409,24 @@ describe('Hanuman#pipe', () => {
 describe('Hanuman#range', () => {
 
     it('creates list of sequential numbers', () => {
-        
-        let oneToTen = H.range(1,10);
-        
+
+        let oneToTen = H.range(1, 10);
+
         expect(oneToTen).to.have.lengthOf(10);
         expect(H.get('0', oneToTen)).to.equal(1);
         expect(H.get('9', oneToTen)).to.equal(10);
-        
-        let justTen = H.range(10,10);
+
+        let justTen = H.range(10, 10);
         expect(justTen).to.have.lengthOf(1);
         expect(H.get('0', justTen)).to.equal(10);
         expect(H.get('1', justTen)).to.be.undefined;
     });
-    
+
     it('can be curried', () => {
-        
+
         let startAtOne = H.range(1);
         let oneToTen = startAtOne(10);
-        
+
         expect(oneToTen).to.have.lengthOf(10);
         expect(H.get('0', oneToTen)).to.equal(1);
         expect(H.get('9', oneToTen)).to.equal(10);
@@ -454,18 +491,18 @@ describe('Hanuman#scan', () => {
         expect(H.get('0', listOfSums)).to.equal(0);
         expect(H.get('6', listOfSums)).to.equal(21);
     });
-    
+
     it('returns an array with a single item if provided an empty list', () => {
         let listOfSums = H.scan(addTwo, 0, []);
         expect(listOfSums).to.have.lengthOf(1);
         expect(H.get('0', listOfSums)).to.equal(0);
     });
-    
+
     it('can be curried', () => {
-    
+
         let multipleScan = H.scan(multiply);
         let multipleSequence = multipleScan(1, numbers);
-        
+
         expect(multipleSequence).to.have.lengthOf(7);
         expect(H.get('0', multipleSequence)).to.equal(1);
         expect(H.get('6', multipleSequence)).to.equal(720);
@@ -473,7 +510,7 @@ describe('Hanuman#scan', () => {
 
 });
 
-afterEach(function(done) {
+afterEach(function (done) {
     setTimeout(done, 25);
 });
 /*eslint-enable no-undef */

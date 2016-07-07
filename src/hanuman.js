@@ -5,31 +5,31 @@
     'use strict';
 
     /** Accepts a message, and returns a new error */
-    let _error = message => new Error(`ø( ^_^ )ø Hanuman: ${message}`);
+    const _error = message => new Error(`ø( ^_^ )ø Hanuman: ${message}`);
 
     /** Check for null */
-    let _isNull = input => input === null;
-    
+    const _isNull = input => input === null;
+
     /** Check for boolean */
-    let _isBoolean = input => typeof input === 'boolean';
-    
+    const _isBoolean = input => typeof input === 'boolean';
+
     /** Check for boolean */
-    let _isFunction= input => typeof input === 'function';
+    const _isFunction = input => typeof input === 'function';
 
     /** Check for string */
-    let _isString = input => typeof input === 'string';
+    const _isString = input => typeof input === 'string';
 
     /** Check for number */
-    let _isNumber = input => typeof input === 'number';
+    const _isNumber = input => typeof input === 'number';
 
     /** Check for array */
-    let _isArray = input => Array.isArray(input);
+    const _isArray = input => Array.isArray(input);
 
     /** Check for object */
-    let _isObject = input => typeof input === 'object' && !_isNull(input);
+    const _isObject = input => typeof input === 'object' && !_isNull(input);
 
     /** Ensures that the input is of the correct type */
-    let _validateType = (type, input) => {
+    const _validateType = (type, input) => {
 
         switch (type) {
             case 'number':
@@ -55,45 +55,45 @@
         }
 
     };
-    
+
     /**
      * Returns a deep copy of the supplied input for all types except functions,
      * for which a reference is returned.
      * @param {*} input - A single argument or series of arguments
      */
-    let clone = input => {
-        
-        if ( _isString(input) ) {
+    const clone = input => {
+
+        if (_isString(input)) {
             return input.slice();
         }
-        
+
         if (_isBoolean(input)) {
             return !!input;
         }
-        
-        if ( _isFunction(input) || _isNumber(input) || _isNull(input) ) {
-            return input; 
+
+        if (_isFunction(input) || _isNumber(input) || _isNull(input)) {
+            return input;
         }
-        
-        if ( _isArray(input) ) {
-            
-            let cloneArray = (acc, input) => {
+
+        if (_isArray(input)) {
+
+            const cloneArray = (acc, input) => {
                 acc.push(clone(input));
                 return acc;
             };
-            
+
             return reduce(cloneArray, [], input);
         }
-        
-        if ( _isObject(input) ) {
-            
-            let cloneObj = (acc, key) => {
+
+        if (_isObject(input)) {
+
+            const cloneObj = (acc, key) => {
                 acc[key] = clone(input[key]);
                 return acc;
             };
-            
+
             return H.reduce(cloneObj, {}, Object.keys(input));
-            
+
         }
     };
 
@@ -103,14 +103,14 @@
      * @param {...*} [args] - A single argument or series of arguments
      * TODO Preserve length of original function
      */
-    let curry = (fn, args) => {
+    const curry = (fn, args) => {
 
         args = args || [];
 
-        return function() {
+        return function () {
 
-            let arity = fn.length;
-            let combinedArgs = args.concat(Array.from(arguments));
+            const arity = fn.length;
+            const combinedArgs = args.concat(Array.from(arguments));
 
             if (combinedArgs.length === arity) {
                 return fn.apply(this, combinedArgs);
@@ -126,11 +126,11 @@
      * @param {Function} fn - The predicate function which acts as the filter
      * @param {Array} list - The list to be iterated over
      */
-    let filter = (fn, list) => {
+    const filter = (fn, list) => {
 
         _validateType('array', list);
 
-        let reducer = (acc, item) => {
+        const reducer = (acc, item) => {
             !!fn(item) && acc.push(item);
             return acc;
         };
@@ -140,19 +140,29 @@
     };
 
     /** forEach Array */
-    let _forEachArray = (fn, array) => {
+    const _forEachArray = (fn, array, condition) => {
+
+        const check = condition ? condition : () => false;
 
         for (let i = 0; i < array.length; i++) {
+            if (check(array[i], i, array)) {
+                return;
+            }
             fn(array[i], i, array);
         }
 
     };
 
     /** forEach Object */
-    let _forEachObject = (fn, obj) => {
+    const _forEachObject = (fn, obj, condition) => {
 
-        let keys = Object.keys(obj);
+        const check = condition ? condition : () => false;
+
+        const keys = Object.keys(obj);
         for (let i = 0; i < keys.length; i++) {
+            if (check(obj[keys[i]], keys[i], obj)) {
+                return;
+            }
             fn(obj[keys[i]], keys[i], obj);
         }
 
@@ -165,7 +175,7 @@
      * @param {Function} fn
      * @param {Array | Object} [args] - A single argument or series of arguments
      */
-    let forEach = (fn, collection) => {
+    const forEach = (fn, collection) => {
 
         _validateType('array-object', collection);
 
@@ -174,16 +184,35 @@
     };
 
     /**
+     * Identical to forEach, except a predicate function is taken as the second parameter to allow for
+     * for early termination of the iteration process.  The predicate function accepts the same parameters
+     * as the iteratior function.  Since the order of object keys cannot be guaranteed, it is not possible
+     * to determine when the predicate function will result in early termination.
+     * @param {Function} fn
+     * @param {Function} condition
+     * @param {Array | Object} [args] - A single argument or series of arguments
+     */
+    const forEachBreak = (fn, condition, collection) => {
+
+        _validateType('array-object', collection);
+
+        Array.isArray(collection) ? _forEachArray(fn, collection, condition) : _forEachObject(fn, collection, condition);
+
+    };
+
+
+
+    /**
      * Returns the value from an object, or undefined if it doesn't exist
      * @param {String | Array} props - An array of properties or a single property
      * @param {Object | Array} obj
      */
-    let get = (props, obj) => {
+    const get = (props, obj) => {
 
         _validateType('object', obj);
 
         let nested = obj;
-        let properties = typeof props === 'string' ? [props] : props;
+        const properties = typeof props === 'string' ? [props] : props;
 
         for (let i = 0; i < properties.length; i++) {
             nested = nested[properties[i]];
@@ -199,7 +228,7 @@
      * Returns a boolean indicating whether or not the given input is empty
      * @param {String | Array | object} input
      */
-    let isEmpty = input => {
+    const isEmpty = input => {
 
         if ((_isString(input) || _isArray(input)) && input.length === 0) {
             return true;
@@ -214,7 +243,7 @@
     };
 
     /** Map array */
-    let _mapArray = (fn, array) => {
+    const _mapArray = (fn, array) => {
 
         return reduce((acc, item) => {
             acc.push(fn(item));
@@ -224,7 +253,7 @@
     };
 
     /** Map object */
-    let _mapObject = (fn, obj) => {
+    const _mapObject = (fn, obj) => {
 
         return reduce((acc, key) => {
             acc[key] = fn(obj[key]);
@@ -239,7 +268,7 @@
      * @param {Function} fn - The function to be called on each element
      * @param {Array | Object} list - The list to be iterated over
      */
-    let map = (fn, collection) => {
+    const map = (fn, collection) => {
 
         _validateType('array-object', collection);
 
@@ -252,7 +281,7 @@
      * @param {String} key - The key of the k/v pair to copy
      * @param {Boolean} all - Should undefined properties be copied
      */
-    let _copyProperty = (obj, acc, key, all) => {
+    const _copyProperty = (obj, acc, key, all) => {
         if (all || obj.hasOwnProperty(key)) {
             acc[key] = clone(obj[key]);
         }
@@ -265,11 +294,11 @@
      * @param {Array} props - An array of properties
      * @param {Object} obj - The object from which the properties are copied
      */
-    let pick = (props, obj) => {
+    const pick = (props, obj) => {
 
         _validateType('object', obj);
 
-        let copyProperty = (acc, key) => _copyProperty(obj, acc, key, false);
+        const copyProperty = (acc, key) => _copyProperty(obj, acc, key, false);
 
         return reduce(copyProperty, {}, props);
     };
@@ -280,11 +309,11 @@
      * @param {Array} props - An array of properties
      * @param {Object} obj - The object from which the properties are copied
      */
-    let pickAll = (props, obj) => {
+    const pickAll = (props, obj) => {
 
         _validateType('object', obj);
 
-        let copyProperty = (acc, key) => _copyProperty(obj, acc, key, true);
+        const copyProperty = (acc, key) => _copyProperty(obj, acc, key, true);
 
         return reduce(copyProperty, {}, props);
     };
@@ -296,7 +325,7 @@
      * arguments.  The remaining functions may only accept a single argument.
      * @param {...Function} fns
      */
-    let pipe = (...fns) => {
+    const pipe = (...fns) => {
 
         return (...args) => {
 
@@ -315,20 +344,20 @@
      * @param {Number} start - The first number in the list
      * @param {Number} end - The last number in the list
      */
-    let range = (start, end) => {
+    const range = (start, end) => {
 
         _validateType('number', parseInt(start)) && _validateType('number', parseInt(stop));
-        
-        let list = [];
+
+        const list = [];
         let current = parseInt(start);
-        let stop = parseInt(end) + 1;
-        
-        while (current < stop ) {
+        const stop = parseInt(end) + 1;
+
+        while (current < stop) {
             list.push(current++);
         }
 
         return list;
-    
+
     };
 
     /**
@@ -337,7 +366,7 @@
      * @param {*} acc - The initial value passed to the iterator function
      * @param {Array} list - The list to be iterated over
      */
-    let reduce = (fn, memo, list) => {
+    const reduce = (fn, memo, list) => {
 
         _validateType('array', list);
 
@@ -349,19 +378,19 @@
 
         return result;
     };
-    
+
     /**
      * Applies an iterator function to an accumulator and each value in a a list, returning a list
-     * of successively reduced values 
+     * of successively reduced values
      * @param {Function} fn - The iterator function which receives the memo and current item from the list
      * @param {*} acc - The initial value passed to the iterator function
      * @param {Array} list - The list to be iterated over
      */
-    let scan = (fn, memo, list) => {
+    const scan = (fn, memo, list) => {
 
         _validateType('array', list);
 
-        let result = [memo];
+        const result = [memo];
 
         _forEachArray((value, i) => {
             result.push(fn(result[i], value, i));
@@ -370,11 +399,12 @@
         return result;
     };
 
-    let H = {
+    const H = {
         clone,
         curry,
         filter: curry(filter),
         forEach: curry(forEach),
+        forEachBreak: curry(forEachBreak),
         get: curry(get),
         isEmpty: isEmpty,
         map: curry(map),
