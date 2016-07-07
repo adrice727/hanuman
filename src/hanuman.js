@@ -9,12 +9,12 @@
 
     /** Check for null */
     let _isNull = input => input === null;
-    
+
     /** Check for boolean */
     let _isBoolean = input => typeof input === 'boolean';
-    
+
     /** Check for boolean */
-    let _isFunction= input => typeof input === 'function';
+    let _isFunction = input => typeof input === 'function';
 
     /** Check for string */
     let _isString = input => typeof input === 'string';
@@ -55,45 +55,45 @@
         }
 
     };
-    
+
     /**
      * Returns a deep copy of the supplied input for all types except functions,
      * for which a reference is returned.
      * @param {*} input - A single argument or series of arguments
      */
     let clone = input => {
-        
-        if ( _isString(input) ) {
+
+        if (_isString(input)) {
             return input.slice();
         }
-        
+
         if (_isBoolean(input)) {
             return !!input;
         }
-        
-        if ( _isFunction(input) || _isNumber(input) || _isNull(input) ) {
-            return input; 
+
+        if (_isFunction(input) || _isNumber(input) || _isNull(input)) {
+            return input;
         }
-        
-        if ( _isArray(input) ) {
-            
+
+        if (_isArray(input)) {
+
             let cloneArray = (acc, input) => {
                 acc.push(clone(input));
                 return acc;
             };
-            
+
             return reduce(cloneArray, [], input);
         }
-        
-        if ( _isObject(input) ) {
-            
+
+        if (_isObject(input)) {
+
             let cloneObj = (acc, key) => {
                 acc[key] = clone(input[key]);
                 return acc;
             };
-            
+
             return H.reduce(cloneObj, {}, Object.keys(input));
-            
+
         }
     };
 
@@ -140,19 +140,29 @@
     };
 
     /** forEach Array */
-    let _forEachArray = (fn, array) => {
+    let _forEachArray = (fn, array, condition) => {
+
+        let check = condition ? condition : () => false;
 
         for (let i = 0; i < array.length; i++) {
+            if (check(array[i], i, array)) {
+                return;
+            }
             fn(array[i], i, array);
         }
 
     };
 
     /** forEach Object */
-    let _forEachObject = (fn, obj) => {
+    let _forEachObject = (fn, obj, condition) => {
+
+        let check = condition ? condition : () => false;
 
         let keys = Object.keys(obj);
         for (let i = 0; i < keys.length; i++) {
+            if (check(obj[keys[i]], keys[i], obj)) {
+                return;
+            }
             fn(obj[keys[i]], keys[i], obj);
         }
 
@@ -172,6 +182,25 @@
         Array.isArray(collection) ? _forEachArray(fn, collection) : _forEachObject(fn, collection);
 
     };
+
+    /**
+     * Idential to forEach, except a predicate function is taken as the second parameter to allow for
+     * for early termination of the iteration.  The predicate function accepts the same parameters as the
+     * iteration function.  Since the order of object keys cannot be guaranteed, it is not possible to
+     * determine when the predicate function will result in early termination.
+     * @param {Function} fn
+     * @param {Function} condition
+     * @param {Array | Object} [args] - A single argument or series of arguments
+     */
+    let forEachBreak = (fn, condition, collection) => {
+
+        _validateType('array-object', collection);
+
+        Array.isArray(collection) ? _forEachArray(fn, collection, condition) : _forEachObject(fn, collection, condition);
+
+    };
+
+
 
     /**
      * Returns the value from an object, or undefined if it doesn't exist
@@ -318,17 +347,17 @@
     let range = (start, end) => {
 
         _validateType('number', parseInt(start)) && _validateType('number', parseInt(stop));
-        
+
         let list = [];
         let current = parseInt(start);
         let stop = parseInt(end) + 1;
-        
-        while (current < stop ) {
+
+        while (current < stop) {
             list.push(current++);
         }
 
         return list;
-    
+
     };
 
     /**
@@ -349,10 +378,10 @@
 
         return result;
     };
-    
+
     /**
      * Applies an iterator function to an accumulator and each value in a a list, returning a list
-     * of successively reduced values 
+     * of successively reduced values
      * @param {Function} fn - The iterator function which receives the memo and current item from the list
      * @param {*} acc - The initial value passed to the iterator function
      * @param {Array} list - The list to be iterated over
@@ -375,6 +404,7 @@
         curry,
         filter: curry(filter),
         forEach: curry(forEach),
+        forEachBreak: curry(forEachBreak),
         get: curry(get),
         isEmpty: isEmpty,
         map: curry(map),
