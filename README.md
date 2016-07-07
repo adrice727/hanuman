@@ -3,10 +3,9 @@
 
  - Provides a minimal, yet powerful set of utility functions
  - Functions are automatically curried
- - Inspired by [Ramda](http://ramdajs.com/)
- - 4kb minified
+ - 6kb minified
 
-*I'm open to adding additional functionality to Hanuman, so long as I can keep the size of the library to ~1/10 that of Ramda. If there's something you'd like to see added, open an [issue](https://github.com/adrice727/hanuman/issues) on GitHub.*
+*If there's something you'd like to see added, open an [issue](https://github.com/adrice727/hanuman/issues) or create a pull request on [GitHub](https://github.com/adrice727/hanuman).*
 
 
 ###Installation:
