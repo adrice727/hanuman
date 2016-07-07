@@ -37,18 +37,18 @@ for which a reference is returned.*
 ######`*`  **&rarr;**  `*`
 ```javascript
 
-let numbers = [1, 2, 3, 4, 5];
-let numbersCopy = H.clone(numbers); // [1, 2, 3, 4, 5];
+const numbers = [1, 2, 3, 4, 5];
+const numbersCopy = H.clone(numbers); // [1, 2, 3, 4, 5];
 numbers === numbersCopy; // returns false
 
-let user = {id: '28jd2', name: {first: 'Albert' , last: 'King' }, age: 55};
-let userCopy = H.clone(user);
+const user = {id: '28jd2', name: {first: 'Albert' , last: 'King' }, age: 55};
+const userCopy = H.clone(user);
 user === userCopy; // returns false
 user.id === userCopy.id // returns true
 user.name === userCopy.name // returns false
 user.age === userCopy.age // returns true
 
-let add = (a,b,c) => a + b + c;
+const add = (a,b,c) => a + b + c;
 H.clone(add) === add; \\ returns true
 
 
@@ -64,8 +64,8 @@ H.clone(undefined); // returns undefined
 *Returns a curried version of the supplied function*
 ######`function`  **&rarr;**  `function`
 ```javascript
-let add = (a,b,c) => a + b + c;
-let addTen = H.curry(add)(10);
+const add = (a,b,c) => a + b + c;
+const addTen = H.curry(add)(10);
 
 addTen(2,3) // returns 15
 addTen(2)(3) // returns 15
@@ -75,10 +75,10 @@ addTen(2)(3) // returns 15
 *Applies a predicate function to a list of values and returns a new list of values which pass the test*
 ######`function`  **&rarr;**  `array`    **&rarr;**  `array`
 ```javascript
-let isEven= (a) => a % 2 === 0;
-let numbers = [1, 2, 3, 4, 5];
+const isEven= (a) => a % 2 === 0;
+const numbers = [1, 2, 3, 4, 5];
 
-let getEvens = H.filter(isEven);
+const getEvens = H.filter(isEven);
 getEvens(numbers); // returns [2, 4]
 ```
 
@@ -87,27 +87,53 @@ getEvens(numbers); // returns [2, 4]
 *Applies a function to each item in the collection.  If the collection is an array, the  iterator function will receive the value, index, and array.  If the collection is an object, the iterator function will receive the value, key, and object.*
 ######`function`  **&rarr;**  `array`    **&rarr;**  `*`
 ```javascript
-let log = (v, i, list) => console.log(v);
-let numbers = [1, 2, 3, 4, 5];
+const log = (v, i, list) => console.log(v);
+const numbers = [1, 2, 3, 4, 5];
 
-let logEach = H.curry(log);
+const logEach = H.curry(log);
 logEach(numbers); // logs 1, 2, 3, 4, 5
 
-let logObject = (v, k, obj) => console.log(`${k}: ${v}`);
-let user = {id: '28jd2', name: {first: 'Albert' , last: 'King' }, age: 55};
+const logObject = (v, k, obj) => console.log(`${k}: ${v}`);
+const user = {id: '28jd2', name: {first: 'Albert' , last: 'King' }, age: 55};
 
 H.forEach(logObject, user) // logs 'id: 28jd2', 'name: [object Object]', 'age: 55'
 
 ```
+
+### `forEachBreak`
+
+*Identical to forEach, except a predicate function is taken as the second parameter to allow for for early termination of the iteration process.  The predicate function accepts the same parameters as the iteration function.  Since the order of object keys cannot be guaranteed, it is not possible to determine when the predicate function will result in early termination.*
+######`function`  **&rarr;**  `array`    **&rarr;**  `*`
+```javascript
+let result = [];
+const numbers = [1, 2, 3, 4, 5];
+const updateResult = v => result.push(v);
+const greaterThanTwo = v => v > 2;
+H.forEachBreak(updateResult, greaterThanTwo, numbers);
+console.log(result); // [1, 2];
+
+result = {};
+const copyToResult = (v, k, obj) => result[key] = v;
+const isName = (v, k) => k === 'name';
+const user = {id: '28jd2', name: {first: 'Albert' , last: 'King' }, age: 55};
+
+H.forEachBreak(copyToResult, isName, user);
+
+// 'name' is the only property that is guaranteed to be undefined
+console.log(result.name); // undefined
+
+
+```
+
 ### `get`
 *Returns a property from an object, or undefined if it doesn't exist.  An array of keys can be passed as the first object to retrieve a nested property.*
 ######`string | array`  **&rarr;**  `object`    **&rarr;**  `* | undefined`
 ```javascript
-let user = {id: '28jd2', name: {first: 'Albert' , last: 'King' }, age: 55};
+const user = {id: '28jd2', name: {first: 'Albert' , last: 'King' }, age: 55};
 
 H.get('id', user); // returns '28jd2'
 
-let getFirstName = H.get(['name', 'first']);
+const getFirstName = H.get(['name', 'first']);
 getFirstName(user); // returns 'Albert'
 
 H.get(['name', 'middle'], user); // returns undefined
@@ -116,7 +142,7 @@ H.get(['name', 'middle'], user); // returns undefined
 ### `isEmpty`
 ######*`* cannot be curried *`*
 *Returns a boolean indicating whether or not the given input is empty*
-######`string | array | object`  **&rarr;**  `boolean` 
+######`string | array | object`  **&rarr;**  `boolean`
 ```javascript
 H.isEmpty(''); // returns true
 H.isEmpty('empty'); // returns false
@@ -137,12 +163,12 @@ H.isEmpty(undefined); // returns false
 *Creates a new array or object by applying a function to each value in the  array or object property*
 ######`function`  **&rarr;**  `array | object`    **&rarr;**  `array | object`
 ```javascript
-let square  = (a) => a * a;
-let numbers = [1, 2, 3, 4, 5];
+const square  = (a) => a * a;
+const numbers = [1, 2, 3, 4, 5];
 
 H.map(square, numbers); // returns [1, 4, 9, 16, 25]
 
-let double = x => x * 2;
+const double = x => x * 2;
 H.map(double, { a: 1, b: 2, c: 3 }); // returns { a: 2, b: 4, c: 6 }
 ```
 
@@ -150,7 +176,7 @@ H.map(double, { a: 1, b: 2, c: 3 }); // returns { a: 2, b: 4, c: 6 }
 *Returns a new object by copying properties from the supplied object.  Undefined properties are not copied to the new object.*
 ######`array`  **&rarr;**  `object`    **&rarr;**  `object`
 ```javascript
-let fruit = {a: 'apple', b: 'banana', c: 'cherry', d: 'date', e: 'elderberry'};
+const fruit = {a: 'apple', b: 'banana', c: 'cherry', d: 'date', e: 'elderberry'};
 
 H.pick(['a', 'b', 'd'], fruit) // returns {a: 'apple', b: 'banana', d: 'date'};
 H.pick(['a', 'f'], fruit) // returns {a: 'apple'};
@@ -159,7 +185,7 @@ H.pick(['a', 'f'], fruit) // returns {a: 'apple'};
 *Returns a new object by copying properties from the supplied object.  Undefined properties are copied to the new object.*
 ######`array`  **&rarr;**  `object`    **&rarr;**  `object`
 ```javascript
-let fruit = {a: 'apple', b: 'banana', c: 'cherry', d: 'date', e: 'elderberry'};
+const fruit = {a: 'apple', b: 'banana', c: 'cherry', d: 'date', e: 'elderberry'};
 
 H.pickAll(['a', 'b', 'd'], fruit) // returns {a: 'apple', b: 'banana', d: 'date'};
 H.pickAll(['a', 'f'], fruit) // returns {a: 'apple', f: undefined};
@@ -170,15 +196,15 @@ H.pickAll(['a', 'f'], fruit) // returns {a: 'apple', f: undefined};
 *Creates a composed function by chaining the provided functions from left to right.  The first function in the chain may accept any number of arguments.  The remaining functions may only accept a single argument.*
 ######`...function`  **&rarr;**  `function`
 ```javascript
-let double = x => x * 2;
-let subtractTen = x => x - 10;
+const double = x => x * 2;
+const subtractTen = x => x - 10;
 
 H.pipe(subtractTen, double)(22) // returns 24
 
-let evens = [2, 4, 6, 8, 10, 12];
-let addTwo = (a,b) => a + b;
+const evens = [2, 4, 6, 8, 10, 12];
+const addTwo = (a,b) => a + b;
 
-let doubleFirstPlus44 = H.pipe(H.path(0), double, H.curry(addTwo)(44));
+const doubleFirstPlus44 = H.pipe(H.path(0), double, H.curry(addTwo)(44));
 
 doubleFirstPlus44(evens) // returns 48
 ```
@@ -193,7 +219,7 @@ H.range(1,5); // returns [1, 2, 3, 4, 5]
 H.range(15,15); // returns [15]
 H.range(1,0); // returns []
 
-let startAtTwelve = H.range(12);
+const startAtTwelve = H.range(12);
 startAtTwelve(13); // returns [12, 13];
 startAtTwelve(17); // returns [12, 13, 14, 15, 16, 17];
 
@@ -203,14 +229,14 @@ startAtTwelve(17); // returns [12, 13, 14, 15, 16, 17];
 *Applies an iterator function to an accumulator and the current value of the list, successively returning a single value*
 ######`function`  **&rarr;**  `*`    **&rarr;**  `array`  **&rarr;**  `*`
 ```javascript
-let add = (a, b) => a + b;
-let numbers = [1, 2, 3, 4, 5];
+const add = (a, b) => a + b;
+const numbers = [1, 2, 3, 4, 5];
 
 H.reduce(add, 0, numbers); // returns 15
 H.reduce(add, 10, numbers); // returns 25
 
-let isEven= (a) => a % 2 === 0;
-let evenSquares = (acc, v) => {
+const isEven= (a) => a % 2 === 0;
+const evenSquares = (acc, v) => {
     if ( isEven(v) ) {
         acc[v] = v * v;
     }
@@ -224,8 +250,8 @@ H.reduce(evenSquares, {}, numbers); // returns { 2:4, 4:16 }
 *Applies an iterator function to an accumulator and each value in a a list, returning a list of successively reduced values*
 ######`function`  **&rarr;**  `*`    **&rarr;**  `array`  **&rarr;**  `array`
 ```javascript
-let add = (a, b) => a + b;
-let numbers = [1, 2, 3, 4, 5];
+const add = (a, b) => a + b;
+const numbers = [1, 2, 3, 4, 5];
 
 H.scan(add, 0, []); // returns [0]
 H.scan(add, 0, numbers); // returns [0, 1, 3, 6, 10, 15]
