@@ -157,18 +157,32 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     };
 
     /** forEach Array */
-    var _forEachArray = function _forEachArray(fn, array) {
+    var _forEachArray = function _forEachArray(fn, array, condition) {
+
+        var check = condition ? condition : function () {
+            return false;
+        };
 
         for (var i = 0; i < array.length; i++) {
+            if (check(array[i], i, array)) {
+                return;
+            }
             fn(array[i], i, array);
         }
     };
 
     /** forEach Object */
-    var _forEachObject = function _forEachObject(fn, obj) {
+    var _forEachObject = function _forEachObject(fn, obj, condition) {
+
+        var check = condition ? condition : function () {
+            return false;
+        };
 
         var keys = Object.keys(obj);
         for (var i = 0; i < keys.length; i++) {
+            if (check(obj[keys[i]], keys[i], obj)) {
+                return;
+            }
             fn(obj[keys[i]], keys[i], obj);
         }
     };
@@ -185,6 +199,22 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         _validateType('array-object', collection);
 
         Array.isArray(collection) ? _forEachArray(fn, collection) : _forEachObject(fn, collection);
+    };
+
+    /**
+     * Idential to forEach, except a predicate function is taken as the second parameter to allow for
+     * for early termination of the iteration.  The predicate function accepts the same parameters as the
+     * iteration function.  Since the order of object keys cannot be guaranteed, it is not possible to
+     * determine when the predicate function will result in early termination.
+     * @param {Function} fn
+     * @param {Function} condition
+     * @param {Array | Object} [args] - A single argument or series of arguments
+     */
+    var forEachBreak = function forEachBreak(fn, condition, collection) {
+
+        _validateType('array-object', collection);
+
+        Array.isArray(collection) ? _forEachArray(fn, collection, condition) : _forEachObject(fn, collection, condition);
     };
 
     /**
@@ -369,7 +399,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
     /**
      * Applies an iterator function to an accumulator and each value in a a list, returning a list
-     * of successively reduced values 
+     * of successively reduced values
      * @param {Function} fn - The iterator function which receives the memo and current item from the list
      * @param {*} acc - The initial value passed to the iterator function
      * @param {Array} list - The list to be iterated over
@@ -392,6 +422,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         curry: curry,
         filter: curry(filter),
         forEach: curry(forEach),
+        forEachBreak: curry(forEachBreak),
         get: curry(get),
         isEmpty: isEmpty,
         map: curry(map),
