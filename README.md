@@ -1,9 +1,10 @@
-ø( &#94;_&#94; )ø
+ ø( &#94;_&#94; )ø
 -----------------
 
  - Provides a minimal, yet powerful set of utility functions
+ - Never mutates data
  - Functions are automatically curried
- - 6kb minified
+ - Only 6kb minified
 
 *If there's something you'd like to see added, open an [issue](https://github.com/adrice727/hanuman/issues) or create a pull request on [GitHub](https://github.com/adrice727/hanuman).*
 
