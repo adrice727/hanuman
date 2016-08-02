@@ -102,7 +102,7 @@ H.forEach(logObject, user) // logs 'id: 28jd2', 'name: [object Object]', 'age: 5
 
 ### `forEachBreak`
 
-*Identical to forEach, except a predicate function is taken as the second parameter to allow for for early termination of the iteration process.  The predicate function accepts the same parameters as the iteration function.  Since the order of object keys cannot be guaranteed, it is not possible to determine when the predicate function will result in early termination.*
+*Identical to forEach, except a predicate function is taken as the second parameter to allow for for early termination of the iteration process.  The predicate function accepts the same parameters as the iteration function.  Since the order of object keys cannot be guaranteed, it is not possible to determine when the predicate function will result in early termination for objects.*
 ######`function`  **&rarr;**  `array`    **&rarr;**  `*`
 ```javascript
 let result = [];
