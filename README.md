@@ -126,17 +126,19 @@ console.log(result.name); // undefined
 ```
 
 ### `get`
-*Returns a property from an object, or undefined if it doesn't exist.  An array of keys can be passed as the first argument to retrieve a nested property.*
+*Returns a property from an object, or undefined if it doesn't exist.  To retrieve a nested property, a period-delimited string or an array of keys can be passed as the first argument*
 ######`string | array`  **&rarr;**  `object`    **&rarr;**  `* | undefined`
 ```javascript
 const user = {id: '28jd2', name: {first: 'Albert' , last: 'King' }, age: 55};
 
 H.get('id', user); // returns '28jd2'
 
-const getFirstName = H.get(['name', 'first']);
+const getFirstName = H.get('name.first');
 getFirstName(user); // returns 'Albert'
 
-H.get(['name', 'middle'], user); // returns undefined
+H.get('name.middle', user); // returns undefined
+
+H.get(['name', 'last'], user); // returns 'King'
 ```
 
 ### `isEmpty`
