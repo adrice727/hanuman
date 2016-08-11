@@ -6,6 +6,23 @@
  - Functions are automatically curried
  - Only 6kb minified
 
+Methods include:
+
+ - clone
+ - curry
+ - filter
+ - forEach
+ - forEachBreak
+ - get
+ - isEmpty
+ - map
+ - pick
+ - pickAll
+ - pipe
+ - range
+ - reduce
+ - scan
+
 *If there's something you'd like to see added, open an [issue](https://github.com/adrice727/hanuman/issues) or create a pull request on [GitHub](https://github.com/adrice727/hanuman).*
 
 
