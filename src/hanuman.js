@@ -212,7 +212,7 @@
         _validateType('object', obj);
 
         let nested = obj;
-        const properties = typeof props === 'string' ? [props] : props;
+        const properties = typeof props === 'string' ? props.split('.') : props;
 
         for (let i = 0; i < properties.length; i++) {
             nested = nested[properties[i]];

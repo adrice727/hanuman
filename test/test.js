@@ -204,6 +204,20 @@ describe('Hanuman#get', () => {
         expect(H.get('name', {
             name: 'Albert'
         })).to.equal('Albert');
+
+        expect(H.get('name.first', {
+            name: {
+                first: 'Albert',
+                last: 'King'
+            }
+        })).to.equal('Albert');
+
+        expect(H.get('name.middle', {
+            name: {
+                first: 'Albert',
+                last: 'King'
+            }
+        })).to.be.undefined;
     });
 
     it('accepts a string and returns undefined if the property does not exist', () => {

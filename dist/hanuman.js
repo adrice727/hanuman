@@ -227,7 +227,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         _validateType('object', obj);
 
         var nested = obj;
-        var properties = typeof props === 'string' ? [props] : props;
+        var properties = typeof props === 'string' ? props.split('.') : props;
 
         for (var i = 0; i < properties.length; i++) {
             nested = nested[properties[i]];
