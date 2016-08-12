@@ -224,7 +224,7 @@ H.pipe(subtractTen, double)(22) // returns 24
 const evens = [2, 4, 6, 8, 10, 12];
 const addTwo = (a,b) => a + b;
 
-const doubleFirstPlus44 = H.pipe(H.path(0), double, H.curry(addTwo)(44));
+const doubleFirstPlus44 = H.pipe(H.get(0), double, H.curry(addTwo)(44));
 
 doubleFirstPlus44(evens) // returns 48
 ```
