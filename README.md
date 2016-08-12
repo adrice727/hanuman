@@ -78,14 +78,17 @@ H.clone(undefined); // returns undefined
 <a name="curry"></a>
 ### `curry`
 
-*Returns a curried version of the supplied function*
+*Returns a curried version of the supplied function.*
 ######`function`  **&rarr;**  `function`
 ```javascript
 const add = (a,b,c) => a + b + c;
 const addTen = H.curry(add)(10);
 
-addTen(2,3) // returns 15
-addTen(2)(3) // returns 15
+addTen(2,3); // returns 15
+addTen(2)(3); // returns 15
+
+const addFifteen = addTen(5);
+addFifteen(5); // returns 20
 ```
 <a name="filter"></a>
 ### `filter`
