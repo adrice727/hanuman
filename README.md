@@ -8,20 +8,20 @@
 
 Methods include:
 
- - clone
- - curry
- - filter
- - forEach
- - forEachBreak
- - get
- - isEmpty
- - map
- - pick
- - pickAll
- - pipe
- - range
- - reduce
- - scan
+ - [clone](#clone)
+ - [curry](#curry)
+ - [filter](#filter)
+ - [forEach](#forEach)
+ - [forEachBreak](#forEachBreak)
+ - [get](#get)
+ - [isEmpty](#isEmpty)
+ - [map](#map)
+ - [pick](#pick)
+ - [pickAll](#pickAll)
+ - [pipe](#pipe)
+ - [range](#range)
+ - [reduce](#reduce)
+ - [scan](#scan)
 
 *If there's something you'd like to see added, open an [issue](https://github.com/adrice727/hanuman/issues) or create a pull request on [GitHub](https://github.com/adrice727/hanuman).*
 
@@ -46,7 +46,7 @@ $ bower install hanuman-js
 ```
 
 ###Methods:
-
+<a name="clone"></a>
 ### `clone`
 
 *Creates a deep copy of the supplied input for all types except functions,
@@ -75,7 +75,7 @@ H.clone(true); // returns true
 H.clone(null); // returns null
 H.clone(undefined); // returns undefined
 ```
-
+<a name="curry"></a>
 ### `curry`
 
 *Returns a curried version of the supplied function*
@@ -87,7 +87,7 @@ const addTen = H.curry(add)(10);
 addTen(2,3) // returns 15
 addTen(2)(3) // returns 15
 ```
-
+<a name="filter"></a>
 ### `filter`
 *Applies a predicate function to a list of values and returns a new list of values which pass the test*
 ######`function`  **&rarr;**  `array`    **&rarr;**  `array`
@@ -98,7 +98,7 @@ const numbers = [1, 2, 3, 4, 5];
 const getEvens = H.filter(isEven);
 getEvens(numbers); // returns [2, 4]
 ```
-
+<a name="forEach"></a>
 ### `forEach`
 
 *Applies a function to each item in the collection.  If the collection is an array, the  iterator function will receive the value, index, and array.  If the collection is an object, the iterator function will receive the value, key, and object.*
@@ -116,7 +116,7 @@ const user = {id: '28jd2', name: {first: 'Albert' , last: 'King' }, age: 55};
 H.forEach(logObject, user) // logs 'id: 28jd2', 'name: [object Object]', 'age: 55'
 
 ```
-
+<a name="forEachBreak"></a>
 ### `forEachBreak`
 
 *Identical to forEach, except a predicate function is taken as the second parameter to allow for for early termination of the iteration process.  The predicate function accepts the same parameters as the iteration function.  Since the order of object keys cannot be guaranteed, it is not possible to determine when the predicate function will result in early termination for objects.*
@@ -141,7 +141,7 @@ console.log(result.name); // undefined
 
 
 ```
-
+<a name="get"></a>
 ### `get`
 *Returns a property from an object, or undefined if it doesn't exist.  To retrieve a nested property, a period-delimited string or an array of keys can be passed as the first argument*
 ######`string | array`  **&rarr;**  `object`    **&rarr;**  `* | undefined`
@@ -157,7 +157,7 @@ H.get('name.middle', user); // returns undefined
 
 H.get(['name', 'last'], user); // returns 'King'
 ```
-
+<a name="isEmpty"></a>
 ### `isEmpty`
 ######*`* cannot be curried *`*
 *Returns a boolean indicating whether or not the given input is empty*
@@ -177,7 +177,7 @@ H.isEmpty(44); // returns false
 H.isEmpty(null); // returns false
 H.isEmpty(undefined); // returns false
 ```
-
+<a name="map"></a>
 ### `map`
 *Creates a new array or object by applying a function to each value in the  array or object property*
 ######`function`  **&rarr;**  `array | object`    **&rarr;**  `array | object`
@@ -190,7 +190,7 @@ H.map(square, numbers); // returns [1, 4, 9, 16, 25]
 const double = x => x * 2;
 H.map(double, { a: 1, b: 2, c: 3 }); // returns { a: 2, b: 4, c: 6 }
 ```
-
+<a name="pick"></a>
 ### `pick`
 *Returns a new object by copying properties from the supplied object.  Undefined properties are not copied to the new object.*
 ######`array`  **&rarr;**  `object`    **&rarr;**  `object`
@@ -200,6 +200,7 @@ const fruit = {a: 'apple', b: 'banana', c: 'cherry', d: 'date', e: 'elderberry'}
 H.pick(['a', 'b', 'd'], fruit) // returns {a: 'apple', b: 'banana', d: 'date'};
 H.pick(['a', 'f'], fruit) // returns {a: 'apple'};
 ```
+<a name="pickAll"></a>
 ### `pickAll`
 *Returns a new object by copying properties from the supplied object.  Undefined properties are copied to the new object.*
 ######`array`  **&rarr;**  `object`    **&rarr;**  `object`
@@ -209,7 +210,7 @@ const fruit = {a: 'apple', b: 'banana', c: 'cherry', d: 'date', e: 'elderberry'}
 H.pickAll(['a', 'b', 'd'], fruit) // returns {a: 'apple', b: 'banana', d: 'date'};
 H.pickAll(['a', 'f'], fruit) // returns {a: 'apple', f: undefined};
 ```
-
+<a name="pipe"></a>
 ### `pipe`
 ######*`* cannot be curried *`*
 *Creates a composed function by chaining the provided functions from left to right.  The first function in the chain may accept any number of arguments.  The remaining functions may only accept a single argument.*
@@ -228,7 +229,7 @@ const doubleFirstPlus44 = H.pipe(H.path(0), double, H.curry(addTwo)(44));
 doubleFirstPlus44(evens) // returns 48
 ```
 
-
+<a name="range"></a>
 ### `range`
 *Returns a list of sequential numbers*
 ######`number`  **&rarr;**  `number`    **&rarr;**  `array`
@@ -243,7 +244,7 @@ startAtTwelve(13); // returns [12, 13];
 startAtTwelve(17); // returns [12, 13, 14, 15, 16, 17];
 
 ```
-
+<a name="reduce"></a>
 ### `reduce`
 *Applies an iterator function to an accumulator and the current value of the list, successively returning a single value*
 ######`function`  **&rarr;**  `*`    **&rarr;**  `array`  **&rarr;**  `*`
@@ -264,7 +265,7 @@ const evenSquares = (acc, v) => {
 
 H.reduce(evenSquares, {}, numbers); // returns { 2:4, 4:16 }
 ```
-
+<a name="scan"></a>
 ### `scan`
 *Applies an iterator function to an accumulator and each value in a a list, returning a list of successively reduced values*
 ######`function`  **&rarr;**  `*`    **&rarr;**  `array`  **&rarr;**  `array`
