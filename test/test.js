@@ -105,6 +105,31 @@ describe('Hanuman#clone', () => {
     });
 });
 
+describe('Hanuman#contains', () => {
+
+    it('works for simple lists', () => {
+        const hasTwo = H.contains(2);
+        expect(hasTwo(numbers)).to.be.true;
+        expect(hasTwo(odds)).to.be.false;
+    });
+
+    it('works for complex lists', () => {
+        const susan = {
+            id: '7ssc1',
+            name: {
+                first: 'Susan',
+                last: 'Wellington'
+            },
+            age: 62
+        };
+
+        const containsSusan = H.contains(susan);
+        expect(containsSusan(users)).to.be.true;
+        expect(H.contains(Object.assign({}, susan, { age: 66 }), users)).to.be.false;
+    });
+
+});
+
 describe('Hanuman#curry', function () {
 
     it('curries a single argument', () => {
@@ -126,6 +151,44 @@ describe('Hanuman#curry', function () {
             return a + b + this.c;
         });
         expect(fn.call(context, 1, 2)).to.equal(25);
+    });
+
+});
+
+describe('Hanuman#equals', function () {
+
+    it('works for simple values', () => {
+        expect(H.equals(1, 1)).to.be.true;
+        expect(H.equals(1, 2)).to.be.false;
+        expect(H.equals('tim', 'tim')).to.be.true;
+        expect(H.equals('tim', 'tom')).to.be.false;
+        expect(H.equals(undefined, undefined)).to.be.true;
+        expect(H.equals(null, null)).to.be.true;
+        expect(H.equals(null, undefined)).to.be.false;
+    });
+
+    it('works for simple arrays', () => {
+        expect(H.equals([], [])).to.be.true;
+
+        expect(H.equals([1, 2, 3, 4, 5, 6], numbers)).to.be.true;
+        expect(H.equals([1, 2, 3, 4, 5, 6], evens)).to.be.false;
+
+        expect(H.equals([1, 2, null, undefined, 44], [1, 2, null, undefined, 44])).to.be.true;
+        expect(H.equals([1, 2, null, undefined, 44], [1, 2, null, null, 44])).to.be.false;
+    });
+
+    it('works for simple objects', () => {
+        expect(H.equals({}, {})).to.be.true;
+        expect(H.equals({ a: null }, { b: undefined })).to.be.false;
+        expect(H.equals({ a: 44 }, { a: 44 })).to.be.true;
+        expect(H.equals({ a: 44 }, { a: 55 })).to.be.false;
+    });
+
+    it('works for complex arrays and objects', () => {
+        const a = { a: 44, b: 55, c: [1, 2, { x: 99, y: {z: null} }, 'tim'] };
+        const b = { a: 44, b: 55, c: [1, 2, { x: 99, y: {z: null} }, 'tom'] };
+        expect(H.equals({ a: 44, b: 55, c: [1, 2, { x: 99, y: {z: null} }, 'tim'] }, a)).to.be.true;
+        expect(H.equals({ a: 44, b: 55, c: [1, 2, { x: 99, y: {z: null} }, 'tim'] }, b)).to.be.false;
     });
 
 });

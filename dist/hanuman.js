@@ -2,9 +2,8 @@ var _this = this;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
-/*eslint-disable no-extra-semi */;
-(function () {
-    /*eslint-enable no-extra-semi */
+;(function () {
+    // eslint-disable-line no-extra-semi
 
     'use strict';
 
@@ -117,6 +116,26 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     };
 
     /**
+     * Uses 'equals' to determine whether or not a list contains the
+     * specified target.
+     * @param {*} target - The item for which we're looking
+     * @param {Array} list
+     * @returns {Boolean}
+     */
+    var contains = function contains(target, list) {
+        _validateType('array', list);
+
+        var found = false;
+        var compare = function compare(item) {
+            return found = equals(item, target);
+        };
+        forEachBreak(compare, function () {
+            return found === true;
+        }, list);
+        return found;
+    };
+
+    /**
      * Returns a curried version of the supplied function
      * @param {Function} fn - The function to be curried
      * @param {...*} [args] - A single argument or series of arguments
@@ -137,6 +156,35 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
                 return curry(fn, combinedArgs);
             }
         };
+    };
+
+    /**
+     * Determines whether or not two items are equivalent.
+     * @param {*} one
+     * @param {*} two
+     * @returns {Boolean}
+     */
+    var equals = function equals(one, two) {
+
+        // Simple check for primitives
+        if (!_isObject(one)) {
+            return one === two;
+        }
+
+        // Check for same type of objects
+        if (_isArray(one) !== _isArray(two)) {
+            return false;
+        }
+
+        var equal = true;
+        var check = function check(value, key) {
+            equal = equals(one[key], two[key]);
+        };
+        forEachBreak(check, function () {
+            return equal === false;
+        }, one);
+
+        return equal;
     };
 
     /**
@@ -419,7 +467,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
     var H = {
         clone: clone,
+        contains: curry(contains),
         curry: curry,
+        equals: curry(equals),
         filter: curry(filter),
         forEach: curry(forEach),
         forEachBreak: curry(forEachBreak),

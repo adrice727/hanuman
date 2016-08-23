@@ -1,6 +1,4 @@
-/*eslint-disable no-extra-semi */ ;
-(() => {
-    /*eslint-enable no-extra-semi */
+;(() => { // eslint-disable-line no-extra-semi
 
     'use strict';
 
@@ -98,6 +96,23 @@
     };
 
     /**
+     * Uses 'equals' to determine whether or not a list contains the
+     * specified target.
+     * @param {*} target - The item for which we're looking
+     * @param {Array} list
+     * @returns {Boolean}
+     */
+    const contains = (target, list) => {
+        _validateType('array', list);
+
+        let found = false;
+        const compare = item => found = equals(item, target);
+        forEachBreak(compare, () => found === true, list);
+        return found;
+    };
+
+
+    /**
      * Returns a curried version of the supplied function
      * @param {Function} fn - The function to be curried
      * @param {...*} [args] - A single argument or series of arguments
@@ -119,6 +134,33 @@
             }
 
         };
+    };
+
+    /**
+     * Determines whether or not two items are equivalent.
+     * @param {*} one
+     * @param {*} two
+     * @returns {Boolean}
+     */
+    const equals = (one, two) => {
+
+        // Simple check for primitives
+        if (!_isObject(one)) {
+            return one === two;
+        }
+
+        // Check for same type of objects
+        if (_isArray(one) !== _isArray(two)) {
+            return false;
+        }
+
+        let equal = true;
+        const check = (value, key) => {
+            equal = equals(one[key], two[key]);
+        };
+        forEachBreak(check, () => equal === false, one);
+
+        return equal;
     };
 
     /**
@@ -401,7 +443,9 @@
 
     const H = {
         clone,
+        contains: curry(contains),
         curry,
+        equals: curry(equals),
         filter: curry(filter),
         forEach: curry(forEach),
         forEachBreak: curry(forEachBreak),
