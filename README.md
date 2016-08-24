@@ -11,6 +11,7 @@ Methods include:
  - [clone](#clone)
  - [contains](#contains)
  - [curry](#curry)
+ - [equals](#equals)
  - [filter](#filter)
  - [forEach](#forEach)
  - [forEachBreak](#forEachBreak)
