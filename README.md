@@ -117,7 +117,7 @@ addFifteen(5); // returns 20
 ```javascript
 
 H.equals(1, 1); // returns true
-H.equals(1, '1'); // returns true
+H.equals(1, '1'); // returns false
 H.equals(undefined, null); // returns false
 H.equals([1, 2, 3], [1, 2, 3]); // returns true
 H.equals({a: 44, b: {c: 55}}, {a: 44, b: {c: 55}}); // returns true
