@@ -9,6 +9,7 @@
 Methods include:
 
  - [clone](#clone)
+ - [contains](#contains)
  - [curry](#curry)
  - [filter](#filter)
  - [forEach](#forEach)
@@ -75,6 +76,24 @@ H.clone(true); // returns true
 H.clone(null); // returns null
 H.clone(undefined); // returns undefined
 ```
+<a name="contains"></a>
+### `contains`
+
+*Returns true if the supplied list contains the target item. The `equals` function is used to determine equality.*
+######`*`  **&rarr;**  `array` **&rarr;**  `boolean`
+```javascript
+const containsTwo = H.contains(2);
+containsTwo([1, 2, 3, 4, 5]); // returns true
+containsTwo([1, 3, 5, 7, 9]); // returns false
+
+const containsTim = H.contains({name: 'tim', age: 54});
+const users = [{name: 'lili' , age: 33 }, {name: 'tim', age: 54}];
+containsTim(users); // returns true
+
+const obj = {a: 44, b: 55};
+H.contains('a', Object.keys(obj)); // returns true
+
+```
 <a name="curry"></a>
 ### `curry`
 
@@ -90,6 +109,20 @@ addTen(2)(3); // returns 15
 const addFifteen = addTen(5);
 addFifteen(5); // returns 20
 ```
+<a name="equals"></a>
+### `equals`
+
+*Returns true if the supplied items are equivalent, a.k.a `deep equal`.*
+######`*`  **&rarr;**  `*` **&rarr;**  `boolean`
+```javascript
+
+H.equals(1, 1); // returns true
+H.equals(1, '1'); // returns true
+H.equals(undefined, null); // returns false
+H.equals([1, 2, 3], [1, 2, 3]); // returns true
+H.equals({a: 44, b: {c: 55}}, {a: 44, b: {c: 55}}); // returns true
+```
+
 <a name="filter"></a>
 ### `filter`
 *Applies a predicate function to a list of values and returns a new list of values which pass the test*
