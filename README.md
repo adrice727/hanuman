@@ -128,7 +128,7 @@ addFifteen(5); // returns 20
 <a name="equals"></a>
 ### `equals`
 
-*Returns true if the supplied items are equivalent, a.k.a `deep equal`.*
+*Returns true if the supplied items are equivalent, i.e. `deep equal`.*
 ######`*`  **&rarr;**  `*` **&rarr;**  `boolean`
 ```javascript
 
