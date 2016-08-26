@@ -47,6 +47,21 @@ $ bower install hanuman-js
 <script src="../bower_components/hanuman-js/dist/hanuman.min.js"></script>
 ```
 
+###Usage:
+*Since all methods are automatically curried, they may be used in the following manners:*
+
+```javascript
+/** Pass all arguments at once */
+H.get('a', {a: 44}); // => 44
+
+/** Create and immediately invoke a curried function */
+H.get('a')({a: 44}); // => 44
+
+/** Create and save a reference to a curried function to be used later */
+const getA = H.get('a');
+getA({a: 44}); // => 44
+```
+
 ###Methods:
 <a name="clone"></a>
 ### `clone`
@@ -80,7 +95,7 @@ H.clone(undefined); // returns undefined
 <a name="contains"></a>
 ### `contains`
 
-*Returns true if the supplied list contains the target item. The `equals` function is used to determine equality.*
+*Returns true if the supplied list contains the target item.  Equality is determined using [equals](#equals).*
 ######`*`  **&rarr;**  `array` **&rarr;**  `boolean`
 ```javascript
 const containsTwo = H.contains(2);
@@ -156,7 +171,7 @@ H.forEach(logObject, user) // logs 'id: 28jd2', 'name: [object Object]', 'age: 5
 <a name="forEachBreak"></a>
 ### `forEachBreak`
 
-*Identical to forEach, except a predicate function is taken as the second parameter to allow for for early termination of the iteration process.  The predicate function accepts the same parameters as the iteration function.  Since the order of object keys cannot be guaranteed, it is not possible to determine when the predicate function will result in early termination for objects.*
+*Identical to forEach, except a predicate function is taken as the second parameter to allow for for early termination of the iteration process.  The predicate function accepts the same parameters as the iterator function.  Since the order of object keys cannot be guaranteed, it is not possible to determine when the predicate function will result in early termination for objects.*
 ######`function`  **&rarr;**  `array`    **&rarr;**  `*`
 ```javascript
 let result = [];
@@ -180,7 +195,7 @@ console.log(result.name); // undefined
 ```
 <a name="get"></a>
 ### `get`
-*Returns a property from an object, or undefined if it doesn't exist.  To retrieve a nested property, a period-delimited string or an array of keys can be passed as the first argument*
+*Returns a property from an object, or undefined if it doesn't exist.  To retrieve a nested property, a period-delimited string or an array of keys may be passed as the first argument*
 ######`string | array`  **&rarr;**  `object`    **&rarr;**  `* | undefined`
 ```javascript
 const user = {id: '28jd2', name: {first: 'Albert' , last: 'King' }, age: 55};
