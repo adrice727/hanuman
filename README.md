@@ -4,7 +4,7 @@
  - Provides a minimal, yet powerful set of utility functions
  - Never mutates data
  - Functions are automatically curried
- - Only 6kb minified
+ - Only 6.6kb minified
 
 Methods include:
 
