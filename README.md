@@ -18,6 +18,7 @@ Methods include:
  - [get](#get)
  - [isEmpty](#isEmpty)
  - [map](#map)
+ - [omit](#omit)
  - [pick](#pick)
  - [pickAll](#pickAll)
  - [pipe](#pipe)
@@ -241,6 +242,21 @@ H.map(square, numbers); // returns [1, 4, 9, 16, 25]
 
 const double = x => x * 2;
 H.map(double, { a: 1, b: 2, c: 3 }); // returns { a: 2, b: 4, c: 6 }
+```
+<a name="omit"></a>
+### `omit`
+*Returns a copy of the supplied object containing all keys except those specified to be omitted.  The opposite of [pick](#pick). *
+######`array`  **&rarr;**  `object`    **&rarr;**  `object`
+```javascript
+const fruit = {
+	a: 'apple',
+	b: 'banana',
+	c: 'cherry',
+	d: 'date',
+	e: 'elderberry'
+};
+
+H.omit(['a', 'b', 'd'], fruit) // returns {c: 'cherry', e: 'elderberry'};
 ```
 <a name="pick"></a>
 ### `pick`
