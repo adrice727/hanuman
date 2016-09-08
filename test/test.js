@@ -396,9 +396,47 @@ describe('Hanuman#filter', () => {
 
 });
 
+describe('Hanuman#omit', () => {
+
+    it('creates a new object, omitting the list of supplied properties', () => {
+        expect(H.omit(['a', 'b'], {
+            a: 44,
+            b: 55,
+            c: 66
+        })).to.deep.equal({
+            c: 66
+        });
+    });
+
+    it('works for empty objects', () => {
+        expect(H.omit(['a', 'b', 'c'], {})).to.deep.equal({});
+    });
+
+    it('returns an empty object if all keys are specified', () => {
+        expect(H.omit(['a', 'b', 'c'], {
+            a: 44,
+            b: 55,
+            c: 66
+        })).to.deep.equal({});
+    });
+
+    it('can be curried', () => {
+        const omitA = H.omit(['a']);
+        expect(omitA({
+            a: 44,
+            b: 55,
+            c: 66
+        })).to.deep.equal({
+            b: 55,
+            c: 66
+        });
+    });
+
+});
+
 describe('Hanuman#pick', () => {
 
-    it('creates a new object from list of supplied properties', () => {
+    it('creates a new object from the list of supplied properties', () => {
         expect(H.pick(['a', 'b'], {
             a: 44,
             b: 55,

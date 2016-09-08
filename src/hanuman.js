@@ -331,6 +331,22 @@
     };
 
     /**
+     * Returns a copy of the supplied object containing all keys
+     * except those specified to be omitted.
+     * @param {Array} props - An array of properties
+     * @param {Object} obj - The object from which the properties are copied
+     */
+    const omit = (props, obj) => {
+
+        _validateType('object', obj);
+
+        const copyProperty = (acc, key) => _copyProperty(obj, acc, key, false);
+        const keysToCopy = filter(key => !contains(key, props), Object.keys(obj));
+
+        return reduce(copyProperty, {}, keysToCopy);
+    };
+
+    /**
      * Returns a new object by copying properties from the supplied object.  Undefined
      * properties are not copied to the new object.
      * @param {Array} props - An array of properties
@@ -452,6 +468,7 @@
         get: curry(get),
         isEmpty: isEmpty,
         map: curry(map),
+        omit: curry(omit),
         pick: curry(pick),
         pickAll: curry(pickAll),
         pipe,

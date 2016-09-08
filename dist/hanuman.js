@@ -349,6 +349,26 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     };
 
     /**
+     * Returns a copy of the supplied object containing all keys
+     * except those specified to be omitted.
+     * @param {Array} props - An array of properties
+     * @param {Object} obj - The object from which the properties are copied
+     */
+    var omit = function omit(props, obj) {
+
+        _validateType('object', obj);
+
+        var copyProperty = function copyProperty(acc, key) {
+            return _copyProperty(obj, acc, key, false);
+        };
+        var keysToCopy = filter(function (key) {
+            return !contains(key, props);
+        }, Object.keys(obj));
+
+        return reduce(copyProperty, {}, keysToCopy);
+    };
+
+    /**
      * Returns a new object by copying properties from the supplied object.  Undefined
      * properties are not copied to the new object.
      * @param {Array} props - An array of properties
@@ -476,6 +496,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         get: curry(get),
         isEmpty: isEmpty,
         map: curry(map),
+        omit: curry(omit),
         pick: curry(pick),
         pickAll: curry(pickAll),
         pipe: pipe,
