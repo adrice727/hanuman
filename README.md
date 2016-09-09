@@ -30,7 +30,7 @@ Methods include:
 
 
 ###Installation:
-For use with Node:
+For use with Node/Browserify/webpack/:
 
 ```bash
 $ npm install hanuman-js
