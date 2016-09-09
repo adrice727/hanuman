@@ -30,14 +30,14 @@ Methods include:
 
 
 ###Installation:
-For use with Node/Browserify/webpack/:
+For use with Node/Browserify/webpack:
 
 ```bash
 $ npm install hanuman-js
 ```
 
 ```javascript
-var H = require('hanuman-js');
+const H = require('hanuman-js');
 ```
 For use in the Browser:
 
@@ -263,7 +263,13 @@ H.omit(['a', 'b', 'd'], fruit) // returns {c: 'cherry', e: 'elderberry'};
 *Returns a new object by copying properties from the supplied object.  Undefined properties are not copied to the new object.*
 ######`array`  **&rarr;**  `object`    **&rarr;**  `object`
 ```javascript
-const fruit = {a: 'apple', b: 'banana', c: 'cherry', d: 'date', e: 'elderberry'};
+const fruit = {
+	a: 'apple',
+	b: 'banana',
+	c: 'cherry',
+	d: 'date',
+	e: 'elderberry'
+};
 
 H.pick(['a', 'b', 'd'], fruit) // returns {a: 'apple', b: 'banana', d: 'date'};
 H.pick(['a', 'f'], fruit) // returns {a: 'apple'};
@@ -273,7 +279,13 @@ H.pick(['a', 'f'], fruit) // returns {a: 'apple'};
 *Returns a new object by copying properties from the supplied object.  Undefined properties are copied to the new object.*
 ######`array`  **&rarr;**  `object`    **&rarr;**  `object`
 ```javascript
-const fruit = {a: 'apple', b: 'banana', c: 'cherry', d: 'date', e: 'elderberry'};
+const fruit = {
+	a: 'apple',
+	b: 'banana',
+	c: 'cherry',
+	d: 'date',
+	e: 'elderberry'
+};
 
 H.pickAll(['a', 'b', 'd'], fruit) // returns {a: 'apple', b: 'banana', d: 'date'};
 H.pickAll(['a', 'f'], fruit) // returns {a: 'apple', f: undefined};
