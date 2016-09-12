@@ -331,8 +331,8 @@
     };
 
     /**
-     * Returns a copy of the supplied object containing all keys
-     * except those specified to be omitted.
+     * Returns a copy of the supplied object containing all keys except
+     * those specified to be omitted.
      * @param {Array} props - An array of properties
      * @param {Object} obj - The object from which the properties are copied
      */
@@ -340,10 +340,14 @@
 
         _validateType('object', obj);
 
-        const copyProperty = (acc, key) => _copyProperty(obj, acc, key, false);
-        const keysToCopy = filter(key => !contains(key, props), Object.keys(obj));
+        const copyNonOmittedProperty = (acc, key) => {
+            if (!contains(key, props)) {
+                acc[key] = obj[key];
+            }
+            return acc;
+        };
 
-        return reduce(copyProperty, {}, keysToCopy);
+        return reduce(copyNonOmittedProperty, {}, Object.keys(obj));
     };
 
     /**
