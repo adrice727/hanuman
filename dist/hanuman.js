@@ -349,8 +349,8 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     };
 
     /**
-     * Returns a copy of the supplied object containing all keys
-     * except those specified to be omitted.
+     * Returns a copy of the supplied object containing all keys except
+     * those specified to be omitted.
      * @param {Array} props - An array of properties
      * @param {Object} obj - The object from which the properties are copied
      */
@@ -358,14 +358,14 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
         _validateType('object', obj);
 
-        var copyProperty = function copyProperty(acc, key) {
-            return _copyProperty(obj, acc, key, false);
+        var copyNonOmittedProperty = function copyNonOmittedProperty(acc, key) {
+            if (!contains(key, props)) {
+                acc[key] = obj[key];
+            }
+            return acc;
         };
-        var keysToCopy = filter(function (key) {
-            return !contains(key, props);
-        }, Object.keys(obj));
 
-        return reduce(copyProperty, {}, keysToCopy);
+        return reduce(copyNonOmittedProperty, {}, Object.keys(obj));
     };
 
     /**
