@@ -1,6 +1,6 @@
 {
   "name": "hanuman-js",
-  "version": "0.7.16",
+  "version": "0.7.17",
   "description": "A small, functional, JavaScript helper library",
   "main": "dist/hanuman.min.js",
   "devDependencies": {
