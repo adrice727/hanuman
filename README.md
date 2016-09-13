@@ -172,7 +172,7 @@ H.forEach(logObject, user) // logs 'id: 28jd2', 'name: [object Object]', 'age: 5
 <a name="forEachBreak"></a>
 ### `forEachBreak`
 
-*Identical to forEach, except a predicate function is taken as the second parameter to allow for for early termination of the iteration process.  The predicate function accepts the same parameters as the iterator function.  Since the order of object keys cannot be guaranteed, it is not possible to determine when the predicate function will result in early termination for objects.*
+*Identical to [forEach](#forEach), except a predicate function is taken as the second parameter to allow for early termination of the iteration process.  The predicate function accepts the same parameters as the iterator function.  Since the order of object keys cannot be guaranteed, it is not possible to determine when termination will occur for objects.*
 ######`function`  **&rarr;**  `array`    **&rarr;**  `*`
 ```javascript
 let result = [];
@@ -245,7 +245,7 @@ H.map(double, { a: 1, b: 2, c: 3 }); // returns { a: 2, b: 4, c: 6 }
 ```
 <a name="omit"></a>
 ### `omit`
-*Returns a copy of the supplied object containing all keys except those specified to be omitted.  The opposite of [pick](#pick). *
+*Returns a copy of the supplied object containing all keys except those specified to be omitted.  The opposite of [pick](#pick).*
 ######`array`  **&rarr;**  `object`    **&rarr;**  `object`
 ```javascript
 const fruit = {
