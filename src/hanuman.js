@@ -104,11 +104,7 @@
      */
     const contains = (target, list) => {
         _validateType('array', list);
-
-        let found = false;
-        const compare = item => found = equals(item, target);
-        forEachBreak(compare, () => found === true, list);
-        return found;
+        return !!find(item => equals(item, target), list);
     };
 
 

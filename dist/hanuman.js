@@ -124,15 +124,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
      */
     var contains = function contains(target, list) {
         _validateType('array', list);
-
-        var found = false;
-        var compare = function compare(item) {
-            return found = equals(item, target);
-        };
-        forEachBreak(compare, function () {
-            return found === true;
+        return !!find(function (item) {
+            return equals(item, target);
         }, list);
-        return found;
     };
 
     /**
