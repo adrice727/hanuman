@@ -111,7 +111,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
                 return acc;
             };
 
-            return H.reduce(cloneObj, {}, Object.keys(input));
+            return reduce(cloneObj, {}, Object.keys(input));
         }
     };
 
