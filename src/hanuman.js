@@ -137,6 +137,28 @@
     };
 
     /**
+     * Returns the first item in the list that matches the predicate or undefined
+     * if not found.
+     * @param {Function} predicate
+     * @param {Array} list
+     * @returns {* | undefined}
+     */
+    const find = (predicate, list) => {
+
+        _validateType('array', list);
+
+        let match = undefined;
+        const isMatch = item => {
+            if (predicate(item)) {
+                match = item;
+            }
+        };
+
+        forEachBreak(isMatch, () => !!match, list);
+        return match;
+    };
+
+    /**
      * Determines whether or not two items are equivalent.
      * @param {*} one
      * @param {*} two
@@ -442,6 +464,20 @@
     };
 
     /**
+     * Applies a predicate function to a list of values and returns a list
+     * containing only the values that do not pass the test.
+     * @param {Function} fn - The predicate function which acts as the filter
+     * @param {Array} list - The list to be iterated over
+     */
+    const reject = (fn, list) => {
+
+        _validateType('array', list);
+
+        return filter(item => !fn(item), list);
+
+    };
+
+    /**
      * Applies an iterator function to an accumulator and each value in a a list, returning a list
      * of successively reduced values
      * @param {Function} fn - The iterator function which receives the memo and current item from the list
@@ -466,6 +502,7 @@
         contains: curry(contains),
         curry,
         equals: curry(equals),
+        find: curry(find),
         filter: curry(filter),
         forEach: curry(forEach),
         forEachBreak: curry(forEachBreak),
@@ -478,6 +515,7 @@
         pipe,
         range: curry(range),
         reduce: curry(reduce),
+        reject: curry(reject),
         scan: curry(scan)
     };
 

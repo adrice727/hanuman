@@ -193,6 +193,32 @@ describe('Hanuman#equals', function () {
 
 });
 
+describe('Hanuman#find', () => {
+
+    it('works for simple lists', () => {
+        const isTwo = H.equals(2);
+        expect(H.find(isTwo, numbers)).to.equal(2);
+        expect(H.find(isTwo, odds)).to.be.undefined;
+    });
+
+    it('works for complex lists', () => {
+        const susan = {
+            id: '7ssc1',
+            name: {
+                first: 'Susan',
+                last: 'Wellington'
+            },
+            age: 62
+        };
+
+        const firstNameSusan = user => H.get('name.first', user) === 'Susan';
+        const firstNameFred = user => H.get('name.first', user) === 'Fred';
+        expect(H.equals(susan, H.find(firstNameSusan, users))).to.be.true;
+        expect(H.find(firstNameFred, users)).to.be.undefined;
+    });
+
+});
+
 describe('Hanuman#forEach', () => {
 
     it('applies the supplied function to each item in an array', () => {
@@ -594,6 +620,23 @@ describe('Hanuman#reduce', () => {
         let evenSquares = H.reduce(buildEvenSquaresArray, [], numbers);
         expect(evenSquares).to.contain(4, 16, 36);
         expect(evenSquares).to.not.contain(1, 9, 25);
+    });
+
+});
+
+describe('Hanuman#reject', () => {
+
+    let isEven = v => v % 2 === 0;
+
+    it('returns a new list containing values that do not satisfy the predicate', () => {
+        let output = H.reject(isEven, numbers);
+        expect(output).to.have.lengthOf(3);
+        expect(output[2]).to.equal(5);
+    });
+
+    it('returns an empty list if none of the items in the list satisfy the predicate', () => {
+        let output = H.reject(isEven, evens);
+        expect(output).to.be.empty;
     });
 
 });
