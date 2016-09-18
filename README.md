@@ -13,6 +13,7 @@ Methods include:
  - [curry](#curry)
  - [equals](#equals)
  - [filter](#filter)
+ - [find](#find)
  - [forEach](#forEach)
  - [forEachBreak](#forEachBreak)
  - [get](#get)
@@ -24,6 +25,7 @@ Methods include:
  - [pipe](#pipe)
  - [range](#range)
  - [reduce](#reduce)
+ - [reject](#reject)
  - [scan](#scan)
 
 *If there's something you'd like to see added, open an [issue](https://github.com/adrice727/hanuman/issues) or create a pull request on [GitHub](https://github.com/adrice727/hanuman).*
@@ -150,6 +152,27 @@ const numbers = [1, 2, 3, 4, 5];
 
 const getEvens = H.filter(isEven);
 getEvens(numbers); // returns [2, 4]
+```
+
+<a name="find"></a>
+### `find`
+*Returns the first item in the list that matches the predicate, or undefined if not found*
+######`function`  **&rarr;**  `array`    **&rarr;**  `* | undefined`
+```javascript
+const isEven= a => a % 2 === 0;
+const numbers = [1, 2, 3, 4, 5];
+const odds = [1, 3, 5, 7, 9];
+
+H.find(isEven, numbers); // returns 2;
+H.find(isEven, odds); // returns undefined;
+
+const users = [
+  { name: 'lili' , age: 33 },
+  { name: 'tim', age: 54 }
+];
+const isTim = H.get('name') === 'tim';
+H.find(isTim, users); // returns { name: 'tim', age: 54 }
+
 ```
 <a name="forEach"></a>
 ### `forEach`
@@ -344,6 +367,15 @@ const evenSquares = (acc, v) => {
 }
 
 H.reduce(evenSquares, {}, numbers); // returns { 2:4, 4:16 }
+```
+<a name="reject"></a>
+### `reject`
+*Applies a predicate function to a list of values and returns a new list of values which pass the test*
+######`function`  **&rarr;**  `array`    **&rarr;**  `array`
+```javascript
+const isEven= a => a % 2 === 0;
+const numbers = [1, 2, 3, 4, 5];
+H.reject(isEven, numbers); // returns [1, 3, 5];
 ```
 <a name="scan"></a>
 ### `scan`
