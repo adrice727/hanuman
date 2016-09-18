@@ -273,7 +273,7 @@
      */
     const get = (props, obj) => {
 
-        _validateType('object', obj);
+        _validateType('array-object', obj);
 
         let nested = obj;
         const properties = typeof props === 'string' ? props.split('.') : props;
