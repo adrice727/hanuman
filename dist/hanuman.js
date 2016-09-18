@@ -296,7 +296,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
      */
     var get = function get(props, obj) {
 
-        _validateType('object', obj);
+        _validateType('array-object', obj);
 
         var nested = obj;
         var properties = typeof props === 'string' ? props.split('.') : props;
