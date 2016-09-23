@@ -370,7 +370,7 @@ H.reduce(evenSquares, {}, numbers); // returns { 2:4, 4:16 }
 ```
 <a name="reject"></a>
 ### `reject`
-*Applies a predicate function to a list of values and returns a new list of values which pass the test*
+*Applies a predicate function to a list of values and returns a new list containing the values that do not pass the test*
 ######`function`  **&rarr;**  `array`    **&rarr;**  `array`
 ```javascript
 const isEven= a => a % 2 === 0;
