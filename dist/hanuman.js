@@ -306,6 +306,18 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     };
 
     /**
+    * Returns the value from an object, or a specified default if it doesn't exist
+    * @param {*} defaultValue - An array of properties or a single property
+    * @param {String | Array} props - An array of properties or a single property
+    * @param {Object | Array} obj
+    */
+    var getOr = function getOr(defaultValue, props, obj) {
+        _validateType('array-object', obj);
+        var value = get(props, obj);
+        return value || defaultValue;
+    };
+
+    /**
      * Returns a boolean indicating whether or not the given input is empty
      * @param {String | Array | object} input
      */
@@ -528,6 +540,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         forEach: curry(forEach),
         forEachBreak: curry(forEachBreak),
         get: curry(get),
+        getOr: curry(getOr),
         isEmpty: isEmpty,
         map: curry(map),
         omit: curry(omit),

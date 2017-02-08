@@ -345,6 +345,31 @@ describe('Hanuman#get', () => {
 
 });
 
+describe('Hanuman#getOr', () => {
+
+    it('returns the property value if it exists', () => {
+        expect(H.getOr(55, 'a', {a: 44})).to.equal(44);
+        expect(H.getOr(55, 'a.b', { a: { b: 44 } })).to.equal(44);
+    });
+
+    it('returns the default if the property does not exist', () => {
+        expect(H.getOr(55, 'b', {a: 44})).to.equal(55);
+        expect(H.getOr(55, 'a.b', { a: { b: 44 } })).to.equal(44);
+    });
+
+    it('can be curried', () => {
+        const getOr55 = H.getOr(55);
+        expect(getOr55('a', {a: 44})).to.equal(44);
+        expect(getOr55('b', {a: 44})).to.equal(55);
+        expect(getOr55('a.c', { a: { b: 44 } })).to.equal(55);
+
+        const getAOr55 = getOr55('a');
+        expect(getAOr55({a: 44})).to.equal(44);
+        expect(getAOr55({b: 44})).to.equal(55);
+
+    });
+});
+
 describe('Hanuman#isEmpty', () => {
 
     it('works with strings', () => {

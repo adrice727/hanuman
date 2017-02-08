@@ -17,6 +17,7 @@ Methods include:
  - [forEach](#forEach)
  - [forEachBreak](#forEachBreak)
  - [get](#get)
+ - [getOr](#get)
  - [isEmpty](#isEmpty)
  - [map](#map)
  - [omit](#omit)
@@ -232,6 +233,25 @@ getFirstName(user); // returns 'Albert'
 H.get('name.middle', user); // returns undefined
 
 H.get(['name', 'last'], user); // returns 'King'
+```
+<a name="getOr"></a>
+### `getOr`
+*Returns a property from an object, or a specified default if it doesn't exist.   To retrieve a nested property, a period-delimited string or an array of keys may be passed as the second argument*
+######`*` **&rarr;** `string | array`  **&rarr;**  `object`    **&rarr;**  `*`
+```javascript
+
+const user = {
+  id: '28jd2',
+  name: {first: 'Albert' , last: 'King' },
+  age: 55
+};
+
+const getOrUnknown = H.getOr('unknown');
+const getMiddleName = getOrUnknown('name.middle');
+
+getOrUnknown('age', user); // returns 55
+getMiddleName(user); // returns 'unknown'
+
 ```
 <a name="isEmpty"></a>
 ### `isEmpty`
